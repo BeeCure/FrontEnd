@@ -35,9 +35,7 @@ export default function ProfilePage() {
     <main className="min-h-screen w-full bg-[#FFF8E1] flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-5xl flex flex-col md:flex-row items-start gap-8 md:gap-12">
         
-        <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-[#4B2E05]">
-          <h1 className="text-3xl font-bold mb-8">Akun</h1>
-          
+        <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-[#4B2E05]">          
           <div className="flex flex-col items-center w-full">
             <Avatar className="w-40 h-40 border-4 border-[#F4B740] mb-12 shadow-lg">
               <AvatarImage src={user.image} alt={user.name} className="object-cover" />
