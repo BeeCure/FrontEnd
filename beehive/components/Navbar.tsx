@@ -21,7 +21,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center p-4">
+    <nav className="fixed top-2 left-2 right-2 z-50 flex justify-center">
       <div className="w-[95%] max-w-7xl h-16 md:h-20 backdrop-blur-md flex items-center justify-between ">
         <Link href="/" className="flex items-center gap-2 text-[#4B2E05]">
           <Beef strokeWidth={2.5} className="w-[30px] h-[30px] md:w-[35px] md:h-[35px]" />
@@ -37,9 +37,9 @@ export default function Navbar() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="bg-transparent border-none shadow-none">
                   <ul className="flex flex-col w-[200px] p-2 bg-[#FFF8E1] rounded-[18px] border border-[#4B2E05]/10 shadow-xl">
-                    <ListItem href="/fitur" title="Fitur" />
-                    <ListItem href="/diagram" title="Diagram Lebah" />
-                    <ListItem href="/hubungi" title="Hubungi Kami" />
+                    <ListItem href="/" title="Layanan" />
+                    <ListItem href="/" title="Mengenal BeeHIVE" />
+                    <ListItem href="/" title="Kontak & Lokasi" />
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -95,9 +95,9 @@ export default function Navbar() {
                       <Home size={20} /> Beranda
                     </Link>
                     <div className="ml-9 flex flex-col gap-1 border-l-2 border-[#4B2E05]/10 mt-1">
-                      <Link href="/fitur" className="px-4 py-2 hover:text-[#F4B740]">Fitur</Link>
-                      <Link href="/diagram" className="px-4 py-2 hover:text-[#F4B740]">Diagram Lebah</Link>
-                      <Link href="/hubungi" className="px-4 py-2 hover:text-[#F4B740]">Hubungi Kami</Link>
+                      <Link href="/fitur" className="px-4 py-2 hover:text-[#F4B740]">Layanan</Link>
+                      <Link href="/diagram" className="px-4 py-2 hover:text-[#F4B740]">Mengenal BeeHIVE</Link>
+                      <Link href="/hubungi" className="px-4 py-2 hover:text-[#F4B740]">Kontak & Lokasi</Link>
                     </div>
                   </div>
                   <Link href="/klasifikasi" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg">
