@@ -13,23 +13,40 @@ export default function RegisterPage() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-  const isPasswordMatch = password === confirmPassword;
-  const showMatchError = confirmPassword.length > 0 && !isPasswordMatch;
+  const isPasswordMatch = formData.password === formData.confirmPassword;
+  const showMatchError = formData.confirmPassword.length > 0 && !isPasswordMatch;
 
   const isFormValid = 
-    name !== "" && 
-    email !== "" && 
-    phone !== "" && 
-    password !== "" && 
+    formData.name !== "" && 
+    formData.email !== "" && 
+    formData.phone !== "" && 
+    formData.password !== "" && 
     isPasswordMatch;
 
-  const handleRegister = () => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) return;
+
+    sessionStorage.setItem("registrasi_data", JSON.stringify({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password
+    }));
+
     router.push("/verifikasi");
   };
 
@@ -53,7 +70,6 @@ export default function RegisterPage() {
                 <div className="w-24 h-[14px] bg-[#4B2E05] rounded-full" />
             </div>
           </div>
-          
           <h1 className="text-6xl font-medium tracking-tight mb-6">Bee HIVE</h1>
           <div className="text-center text-2xl font-medium leading-relaxed opacity-90">
             <p>Solusi Pelihara Lebah</p>
@@ -66,43 +82,47 @@ export default function RegisterPage() {
         <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
           <h2 className="text-3xl font-bold mb-6 tracking-widest uppercase">Registrasi</h2>
 
-          <form className="w-full max-w-[360px] space-y-3">
+          <form onSubmit={handleRegister} className="w-full max-w-[360px] space-y-3">
             <div className="space-y-1">
-              <Label className="text-base font-bold ml-1">Nama Lengkap</Label>
+              <Label htmlFor="name" className="text-base font-bold ml-1">Nama Lengkap</Label>
               <Input 
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                id="name"
+                value={formData.name}
+                onChange={handleInputChange}
                 className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
               />
             </div>
 
             <div className="space-y-1">
-              <Label className="text-base font-bold ml-1">Email</Label>
+              <Label htmlFor="email" className="text-base font-bold ml-1">Email</Label>
               <Input 
+                id="email"
                 type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleInputChange}
                 className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
               />
             </div>
 
             <div className="space-y-1">
-              <Label className="text-base font-bold ml-1">No Telepon</Label>
+              <Label htmlFor="phone" className="text-base font-bold ml-1">No Telepon</Label>
               <Input 
+                id="phone"
                 type="tel" 
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={formData.phone}
+                onChange={handleInputChange}
                 className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
               />
             </div>
 
             <div className="space-y-1">
-              <Label className="text-base font-bold ml-1">Kata Sandi</Label>
+              <Label htmlFor="password" className="text-base font-bold ml-1">Kata Sandi</Label>
               <div className="relative">
                 <Input 
+                  id="password"
                   type={showPass ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={handleInputChange}
                   className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md pr-10 focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-xl opacity-60">
@@ -112,12 +132,13 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-base font-bold ml-1">Konfirmasi Kata Sandi</Label>
+              <Label htmlFor="confirmPassword" className="text-base font-bold ml-1">Konfirmasi Kata Sandi</Label>
               <div className="relative">
                 <Input 
+                  id="confirmPassword"
                   type={showConfirmPass ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
                   className={`h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md pr-10 focus-visible:ring-2 focus-visible:ring-[#4B2E05] ${showMatchError ? 'ring-2 ring-red-500' : ''}`}
                 />
                 <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-xl opacity-60">
@@ -131,18 +152,14 @@ export default function RegisterPage() {
 
             <div className="flex justify-end px-1 pt-1">
               <p className="text-[13px] font-medium text-[#4B2E05]">
-                Sudah Punya Akun?{" "}
-                <Link href="/login" className="font-bold cursor-pointer hover:underline">
-                  Masuk
-                </Link>
+                Sudah Punya Akun? <Link href="/login" className="font-bold cursor-pointer hover:underline">Masuk</Link>
               </p>
             </div>
 
             <div className="flex justify-center pt-4">
               <Button 
-                type="button"
+                type="submit"
                 disabled={!isFormValid}
-                onClick={handleRegister}
                 className="w-40 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50"
               >
                 Daftar
