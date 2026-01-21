@@ -90,7 +90,7 @@ export default function LoginPage() {
             </div>
             <div className="flex justify-between items-center px-1 text-[13px] font-medium text-[#4B2E05]">
               <p>Belum Punya Akun? <Link href="/register" className="font-bold hover:underline">Daftar</Link></p>
-              <p className="cursor-pointer hover:underline">Lupa Kata Sandi?</p>
+              <Link href="/lupakatasandi" className="cursor-pointer hover:underline">Lupa Kata Sandi?</Link>
             </div>
             <div className="flex justify-center pt-8">
               <Button type="submit" disabled={!isFormValid || isLoading} className="w-48 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">

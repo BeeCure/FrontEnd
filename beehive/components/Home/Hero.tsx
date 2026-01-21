@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import { Beef, Hexagon, Activity } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 export default function Hero() {
@@ -11,15 +10,39 @@ export default function Hero() {
 
   const menuItems = [
     {
-      icon: <Beef className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:rotate-12" />,
+      icon: (
+        <Image 
+          src="/Image/ikon-informasi.png" 
+          alt="Ikon Informasi" 
+          width={512} 
+          height={512} 
+          className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:rotate-12 object-contain" 
+        />
+      ),
       label: "Informasi Lebah",
     },
     {
-      icon: <Hexagon className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:scale-110" />,
+      icon: (
+        <Image 
+          src="/Image/ikon-klasifikasi.png" 
+          alt="Ikon Klasifikasi" 
+          width={512} 
+          height={512} 
+          className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:scale-110 object-contain" 
+        />
+      ),
       label: "Klasifikasi Jenis",
     },
     {
-      icon: <Activity className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:-translate-y-2" />,
+      icon: (
+        <Image 
+          src="/Image/ikon-monitoring.png" 
+          alt="Ikon Monitoring" 
+          width={512} 
+          height={512} 
+          className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:-translate-y-2 object-contain" 
+        />
+      ),
       label: "Monitoring Pengguna",
     },
   ];
@@ -46,7 +69,7 @@ export default function Hero() {
         </Carousel>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-4 md:gap-16 mt-16 w-full">
+      <div className="flex flex-wrap justify-center gap-4 md:gap-16 mt-16 w-full px-4">
         {menuItems.map((item, idx) => (
           <MenuCard key={idx} icon={item.icon} label={item.label} />
         ))}

@@ -88,6 +88,7 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
       } else {
         alert(result.message || "Gagal memperbarui profil");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Terjadi kesalahan koneksi ke server.");
     } finally {

@@ -9,7 +9,7 @@ const inder = Inder({
 });
 
 export const metadata: Metadata = {
-  title: "Bee Hive",
+  title: "BeeVra",
   description: "Pelestarian Lebah Madu",
 };
 
