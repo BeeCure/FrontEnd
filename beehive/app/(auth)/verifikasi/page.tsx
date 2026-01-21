@@ -64,10 +64,11 @@ export default function RoleVerificationPage() {
       const result = await response.json();
       if (response.ok) {
         setStep("otp");
-        setTimer(60);
+        setTimer(300);
       } else {
         alert(result.message);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Gagal terhubung ke server.");
     } finally {
@@ -94,6 +95,7 @@ export default function RoleVerificationPage() {
       } else {
         alert(result.message);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Terjadi kesalahan verifikasi.");
     } finally {
@@ -115,7 +117,8 @@ export default function RoleVerificationPage() {
       });
       const result = await response.json();
       alert(result.message);
-      if (response.ok) setTimer(60);
+      if (response.ok) setTimer(300);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Gagal mengirim ulang kode.");
     } finally {
