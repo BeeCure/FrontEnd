@@ -36,7 +36,7 @@ export default function Hero() {
     {
       icon: (
         <Image 
-          src="/Image/ikon-monitoring.png" 
+          src="/Image/ikon-monitoring2.png" 
           alt="Ikon Monitoring" 
           width={512} 
           height={512} 

@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { SiSimplelogin } from "react-icons/si";
+import { HiOutlineMail } from "react-icons/hi";
 import { CiRead, CiUnread } from "react-icons/ci";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +37,6 @@ export default function LoginPage() {
       } else {
         alert(result.message || "Email atau password salah.");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Gagal terhubung ke server.");
     } finally {
@@ -47,32 +47,20 @@ export default function LoginPage() {
   return (
     <main className="flex items-center justify-center w-full h-full">
       <div className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
-        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12 text-[#4B2E05]">
-          <div className="mb-14 flex flex-col gap-2 items-center -mt-8">
-            <div className="space-y-[8px] flex flex-col items-center transform scale-125">
-              <div className="w-28 h-[14px] bg-[#4B2E05] rounded-full" />
-              <div className="flex gap-2">
-                <div className="w-16 h-[14px] bg-[#4B2E05] rounded-full" />
-                <div className="w-12 h-[14px] bg-[#4B2E05] rounded-full" />
-              </div>
-              <div className="flex gap-2">
-                <div className="w-12 h-[14px] bg-[#4B2E05] rounded-full" />
-                <div className="w-24 h-[14px] bg-[#4B2E05] rounded-full" />
-              </div>
-              <div className="w-32 h-[14px] bg-[#4B2E05] rounded-full" />
-              <div className="w-24 h-[14px] bg-[#4B2E05] rounded-full" />
-            </div>
-          </div>
-          <h1 className="text-6xl font-medium tracking-tight mb-6">Bee HIVE</h1>
-          <div className="text-center text-2xl font-medium leading-relaxed opacity-90">
-            <p>Solusi Pelihara Lebah</p>
-            <p>Madu Sendiri</p>
-          </div>
+        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
+          <Image 
+            src="/Image/logo-secondary-choco.png" 
+            alt="Bee HIVE Logo" 
+            width={400} 
+            height={400} 
+            className="w-full max-w-[320px] object-contain"
+            priority
+          />
         </div>
         <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
         <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
           <div className="mb-10">
-            <SiSimplelogin size={110} className="text-[#4B2E05]/90 drop-shadow-sm" />
+            <HiOutlineMail size={110} className="text-[#4B2E05]/90 drop-shadow-sm" />
           </div>
           <form onSubmit={handleLogin} className="w-full max-w-[340px] space-y-6">
             <div className="space-y-2">

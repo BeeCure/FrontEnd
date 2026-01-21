@@ -3,8 +3,9 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Beef, Menu, Home, BookOpen, Info, ChevronRight } from "lucide-react";
+import { Menu, Home, BookOpen, Info, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -33,13 +34,9 @@ export default function Navbar() {
           credentials: "include",
         });
 
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success) {
-            setUser(result.data);
-          } else {
-            setUser(null);
-          }
+        const result = await response.json();
+        if (response.ok && result.success) {
+          setUser(result.data);
         } else {
           setUser(null);
         }
@@ -67,10 +64,17 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center p-2">
-      <div className="w-[95%] max-w-7xl h-16 md:h-20 bg-[#FFF8E1]/40 backdrop-blur-md rounded-[15px] px-4 md:px-8 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-[#4B2E05]">
-          <Beef strokeWidth={2.5} className="w-[30px] h-[30px] md:w-[35px] md:h-[35px]" />
-          <span className="text-xl md:text-2xl font-bold tracking-tighter">Bee HIVE</span>
+      <div className="w-[95%] max-w-7xl h-16 md:h-20 bg-[#FFF8E1]/30 backdrop-blur-md rounded-[15px] px-4 md:px-8 flex items-center justify-between">
+        
+        <Link href="/" className="flex items-center">
+          <Image 
+            src="/Image/logo-primary.png" 
+            alt="BeeVra" 
+            width={160} 
+            height={50} 
+            className="h-10 md:h-12 w-auto object-contain"
+            priority
+          />
         </Link>
 
         <div className="hidden md:block">
@@ -86,7 +90,7 @@ export default function Navbar() {
                 <NavigationMenuContent className="bg-transparent border-none shadow-none">
                   <ul className="flex flex-col w-[200px] p-2 bg-[#FFF8E1] rounded-[18px] border border-[#4B2E05]/10 shadow-xl">
                     <ListItem href="/#hero" title="Layanan Utama" />
-                    <ListItem href="/#about" title="Mengenal Bee Hive" />
+                    <ListItem href="/#about" title="Mengenal BeeVra" />
                     <ListItem href="/#contact" title="Hubungi Kami" />
                   </ul>
                 </NavigationMenuContent>
@@ -118,9 +122,21 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <div className="md:hidden">
             <Sheet>
-              <SheetTrigger asChild><button className="p-2 text-[#4B2E05] outline-none"><Menu size={28} /></button></SheetTrigger>
+              <SheetTrigger asChild>
+                <button className="p-2 text-[#4B2E05] outline-none"><Menu size={28} /></button>
+              </SheetTrigger>
               <SheetContent side="right" className="bg-[#FFF8E1] border-none text-[#4B2E05] w-[300px] sm:w-[350px]">
-                <SheetHeader className="text-left border-b border-[#4B2E05]/10 pb-6"><SheetTitle className="flex items-center gap-2 text-[#4B2E05]"><Beef strokeWidth={2.5} size={28} /><span className="text-xl font-bold tracking-tighter">Bee HIVE</span></SheetTitle></SheetHeader>
+                <SheetHeader className="text-left border-b border-[#4B2E05]/10 pb-6">
+                  <SheetTitle>
+                    <Image 
+                      src="/Image/logo-primary.png" 
+                      alt="BeeVra" 
+                      width={120} 
+                      height={40} 
+                      className="h-8 w-auto object-contain"
+                    />
+                  </SheetTitle>
+                </SheetHeader>
                 <div className="flex flex-col gap-1 mt-8">
                   <Link href="/" className="flex items-center gap-3 px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><Home size={20} /> Beranda</Link>
                   <Link href="/klasifikasi" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><BookOpen size={20} /> Klasifikasi Lebah</div><ChevronRight size={18} className="opacity-40" /></Link>
@@ -130,8 +146,14 @@ export default function Navbar() {
                   <div className="absolute bottom-8 left-6 right-6">
                     {user ? (
                       <Link href="/profile" className="p-4 bg-[#F4B740] rounded-2xl flex items-center gap-4 shadow-md">
-                        <Avatar className="w-10 h-10 border-2 border-[#FFF8E1]"><AvatarImage src={avatarSrc} /><AvatarFallback className="bg-[#4B2E05] text-[#FFF8E1]">{getInitials(user.name)}</AvatarFallback></Avatar>
-                        <div className="flex flex-col truncate"><span className="font-bold text-sm leading-none truncate">{user.name}</span><span className="text-[10px] opacity-70">Lihat Profil</span></div>
+                        <Avatar className="w-10 h-10 border-2 border-[#FFF8E1]">
+                          <AvatarImage src={avatarSrc} />
+                          <AvatarFallback className="bg-[#4B2E05] text-[#FFF8E1] font-bold">{getInitials(user.name)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col truncate">
+                          <span className="font-bold text-sm leading-none truncate">{user.name}</span>
+                          <span className="text-[10px] opacity-70">Lihat Profil</span>
+                        </div>
                       </Link>
                     ) : (
                       <div className="flex flex-col gap-3">
@@ -144,14 +166,22 @@ export default function Navbar() {
               </SheetContent>
             </Sheet>
           </div>
+
           {!isLoading && (
             <div className="hidden md:flex items-center gap-4">
               {user ? (
-                <Link href="/profile"><Avatar className="w-11 h-11 border-2 border-[#F4B740] shadow-sm hover:scale-105 transition-transform"><AvatarImage src={avatarSrc} alt={user.name} /><AvatarFallback className="bg-[#4B2E05] text-[#FFF8E1] font-bold">{getInitials(user.name)}</AvatarFallback></Avatar></Link>
+                <Link href="/profile">
+                  <Avatar className="w-11 h-11 border-2 border-[#F4B740] shadow-sm hover:scale-105 transition-transform">
+                    <AvatarImage src={avatarSrc} alt={user.name} />
+                    <AvatarFallback className="bg-[#4B2E05] text-[#FFF8E1] font-bold">{getInitials(user.name)}</AvatarFallback>
+                  </Avatar>
+                </Link>
               ) : (
                 <div className="flex items-center gap-4">
                   <Link href="/login" className="text-[#4B2E05] font-bold hover:opacity-70 text-base">Masuk</Link>
-                  <Button asChild className="bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full font-bold px-6 h-10 shadow-md"><Link href="/register">Daftar</Link></Button>
+                  <Button asChild className="bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full font-bold px-6 h-10 shadow-md">
+                    <Link href="/register">Daftar</Link>
+                  </Button>
                 </div>
               )}
             </div>
