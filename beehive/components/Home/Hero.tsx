@@ -31,7 +31,7 @@ export default function Hero() {
           className="w-12 h-12 md:w-20 md:h-20 transition-transform group-hover:scale-110 object-contain" 
         />
       ),
-      label: "Klasifikasi Jenis",
+      label: "Klasifikasi Lebah",
     },
     {
       icon: (

@@ -129,7 +129,7 @@ export default function ProfilePage() {
               {user.lastLogin && (
                 <div className="flex items-center gap-2 pt-4 opacity-60 px-2">
                   <Clock size={14} />
-                  <span className="text-[10px] md:text-xs">Terakhir masuk: {user.lastLogin}</span>
+                  <span className="text-[10px] md:text-xs">Terakhir masuk: <br/> {user.lastLogin}</span>
                 </div>
               )}
             </div>
