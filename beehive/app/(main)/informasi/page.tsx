@@ -1,106 +1,180 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Loader2, Search } from "lucide-react";
+import AddDataBee from "@/components/Information/add"; 
+import EditDeleteBeeDialog from "@/components/Information/Edit-Delete";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+interface BeeImages {
+  bodyShape?: string;
+  wingShape?: string;
+  entranceShape?: string;
+  honeyPouchShape?: string;
+}
+
+export interface Bee {
+  id: string;
+  name: string;
+  scientificName: string;
+  genus: string;
+  subGenus: string;
+  discoverer: string;
+  discoveredYear: number;
+  distribution: string;
+  images?: BeeImages;
+}
+
+type FilterType = "Semua" | "Trigona" | "Apis";
+
 export default function InformasiPage() {
-  const allBeeData = Array(21).fill({
-    name: "Lebah Klanceng",
-    latinName: "Trigona sp.",
-    image: "/Image/Lebah1.png",
+  const [bees, setBees] = useState<Bee[]>([]);
+  const [filter, setFilter] = useState<FilterType>("Semua");
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedBee, setSelectedBee] = useState<Bee | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const itemsPerPage = 8;
+
+  const fetchBees = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bee/species?search=${search}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const result = await response.json();
+      if (result.success) setBees(result.data);
+    } catch (error) {
+      console.error("Gagal memuat data lebah:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(fetchBees, 500);
+    return () => clearTimeout(debounceTimer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
+  const filteredData = bees.filter((bee) => {
+    const matchesFilter = filter === "Semua" || bee.genus?.toLowerCase() === filter.toLowerCase();
+    const s = search.toLowerCase();
+    const matchesSearch = 
+      bee.name.toLowerCase().includes(s) || 
+      bee.scientificName.toLowerCase().includes(s) || 
+      bee.genus.toLowerCase().includes(s);
+
+    return matchesFilter && matchesSearch;
   });
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const totalPages = Math.ceil(allBeeData.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = allBeeData.slice(startIndex, endIndex);
+  const filterButtons: FilterType[] = ["Semua", "Trigona", "Apis"];
 
   return (
-    <main className=" w-full bg-[#FFF8E1] px-4 py-12 md:px-10 flex flex-col items-center">
-      <div className="w-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-2 gap-y-6 justify-items-center mb-8">
-        {currentItems.map((bee, index) => (
-          <div 
-            key={index} 
-            className="group relative w-full max-w-[180px] md:max-w-[210px] flex flex-col items-center cursor-pointer"
-          >
-            <div className="relative w-full aspect-[4/4.5] overflow-hidden rounded-t-[80px] rounded-b-2xl shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-1">
-              <Image
-                src={bee.image}
-                alt={bee.name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#4B2E05]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
-
-            <div className="w-[90%] -mt-8 relative z-10 bg-[#F4B740] p-3 rounded-xl shadow-md border border-white/10 flex flex-col items-center text-center transition-all duration-500 group-hover:bg-[#4B2E05]">
-              <h3 className="text-[#4B2E05] group-hover:text-[#FFF8E1] font-bold text-sm md:text-base leading-tight transition-colors duration-500">
-                {bee.name}
-              </h3>
-              <p className="text-[#4B2E05]/70 group-hover:text-[#F4B740] italic text-[10px] md:text-xs mt-0.5 transition-colors duration-500">
-                {bee.latinName}
-              </p>
-            </div>
+    <main className="h-100vh w-full bg-[#FFF8E1] px-4 md:mt-1 mt-0 md:px-16 flex flex-col justify-between py-6 overflow-hidden font-inder text-[#4B2E05]">
+      <div className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-4 gap-4">
+        <div className="flex w-full md:w-auto justify-between gap-2">
+          {filterButtons.map((btn) => (
+            <Button 
+              key={btn}
+              onClick={() => {setFilter(btn); setCurrentPage(1);}}
+              className={cn(
+                "flex-1 md:w-32 rounded-[15px] text-[11px] md:text-lg font-bold shadow-sm transition-all h-10 border-none",
+                filter === btn 
+                  ? "bg-[#4B2E05] text-[#F4B740] hover:bg-[#4B2E05]" 
+                  : "bg-[#F4B740]/40 text-[#4B2E05]/60 hover:bg-[#4B2E05] hover:text-[#F4B740]"
+              )}
+            >
+              {btn}
+            </Button>
+          ))}
+        </div>
+        
+        <div className="flex w-full md:flex-1 items-center gap-3 md:ml-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 opacity-40 text-[#4B2E05]" size={18} />
+            <Input 
+              placeholder="Cari lebah berdasarkan nama, nama latin, atau genus..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-10 w-full rounded-[15px] border-none bg-[#F4B740]/20 pl-10 focus-visible:ring-1 focus-visible:ring-[#4B2E05] shadow-inner text-[#4B2E05]"
+            />
           </div>
-        ))}
+          <AddDataBee onSuccess={fetchBees} />
+        </div>
       </div>
 
-      <Pagination>
-        <PaginationContent className="bg-[#F4B740] rounded-full px-4 py-1 shadow-md text-[#4B2E05]">
-          <PaginationItem>
-            <PaginationPrevious 
-              href="#" 
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage > 1) setCurrentPage(currentPage - 1);
-              }}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : "hover:bg-[#4B2E05] hover:text-[#FFF8E1] rounded-full"}
-            />
-          </PaginationItem>
-
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <PaginationItem key={i} className="hidden sm:inline-block">
-              <PaginationLink 
-                href="#"
-                isActive={currentPage === i + 1}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setCurrentPage(i + 1);
-                }}
-                className={currentPage === i + 1 
-                  ? "bg-[#4B2E05] text-[#FFF8E1] rounded-full" 
-                  : "hover:bg-[#4B2E05]/20 rounded-full"
-                }
+      <div className="flex-1 w-full max-w-7xl mx-auto px-2 md:px-10 overflow-y-auto scrollbar-hide py-4">
+        {isLoading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <Loader2 className="animate-spin opacity-20" size={48} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12 justify-items-start">
+            <svg width="0" height="0" className="absolute">
+                <defs>
+                    <clipPath id="smoothHexagon" clipPathUnits="objectBoundingBox">
+                        <path d="M0.5,0.015 C0.543,0.015 0.88,0.208 0.92,0.23 C0.963,0.255 0.985,0.285 0.985,0.335 L0.985,0.665 C0.985,0.715 0.963,0.745 0.92,0.77 C0.88,0.792 0.543,0.985 0.5,0.985 C0.457,0.985 0.12,0.792 0.08,0.77 C0.037,0.745 0.015,0.715 0.015,0.665 L0.015,0.335 C0.015,0.285 0.037,0.255 0.08,0.23 C0.12,0.208 0.457,0.015 0.5,0.015 Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            {currentItems.length > 0 ? currentItems.map((bee, idx) => (
+              <div 
+                key={bee.id} 
+                onClick={() => { setSelectedBee(bee); setIsDetailOpen(true); }}
+                className="group relative flex flex-col items-center w-full max-w-[200px] md:max-w-[240px] cursor-pointer"
               >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+                <div
+                  className="relative w-full aspect-[4/4.2] transition-all duration-500 group-hover:scale-[1.02]"
+                  style={{ clipPath: "url(#smoothHexagon)", WebkitClipPath: "url(#smoothHexagon)" }}
+                >
+                  <Image src={bee.images?.bodyShape || "/Image/Lebah1.png"} alt={bee.name} fill unoptimized priority={idx < 4} className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
+                </div>
+                <div className="w-[85%] bg-[#F4B740] rounded-[22px] py-3 px-2 text-center -mt-14 md:-mt-17 relative z-10 shadow-lg border border-white/20 transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-[#4B2E05]">
+                  <h3 className="text-[#FFF8E1] text-sm md:text-xl font-bold leading-tight drop-shadow-sm group-hover:text-[#F4B740] truncate px-1">{bee.name}</h3>
+                  <p className="text-[#FFF8E1] text-[10px] md:text-base italic opacity-90 leading-tight group-hover:text-[#FFF8E1] truncate px-1">{bee.scientificName}</p>
+                </div>
+              </div>
+            )) : <p className="opacity-30 py-10 w-full text-center md:text-left">Data lebah tidak ditemukan.</p>}
+          </div>
+        )}
+      </div>
 
-          <PaginationItem>
-            <PaginationNext 
-              href="#" 
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-              }}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "hover:bg-[#4B2E05] hover:text-[#FFF8E1] rounded-full"}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <EditDeleteBeeDialog bee={selectedBee} isOpen={isDetailOpen} onOpenChange={setIsDetailOpen} onSuccess={fetchBees} />
+
+      <div className="mt-4">
+        {totalPages > 1 && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem><PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); if(currentPage > 1) setCurrentPage(currentPage - 1) }} className={cn("text-[#4B2E05] font-bold", currentPage === 1 ? "opacity-30 pointer-events-none" : "hover:bg-[#F4B740]/20")} /></PaginationItem>
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <PaginationItem key={i} className="hidden sm:block">
+                  <PaginationLink href="#" isActive={currentPage === i + 1} onClick={(e) => { e.preventDefault(); setCurrentPage(i + 1); }} className={cn("rounded-[10px] font-bold transition-all border-none", currentPage === i + 1 ? "bg-[#4B2E05] text-[#F4B740] hover:bg-[#4B2E05]" : "text-[#4B2E05] hover:bg-[#F4B740]/20")}>{i + 1}</PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem><PaginationNext href="#" onClick={(e) => { e.preventDefault(); if(currentPage < totalPages) setCurrentPage(currentPage + 1) }} className={cn("text-[#4B2E05] font-bold", currentPage === totalPages ? "opacity-30 pointer-events-none" : "hover:bg-[#F4B740]/20")} /></PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
+      </div>
     </main>
   );
 }
