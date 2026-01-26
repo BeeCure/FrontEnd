@@ -37,6 +37,7 @@ export default function LoginPage() {
       } else {
         alert(result.message || "Email atau password salah.");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Gagal terhubung ke server.");
     } finally {
@@ -81,7 +82,7 @@ export default function LoginPage() {
               <Link href="/lupakatasandi" className="cursor-pointer hover:underline">Lupa Kata Sandi?</Link>
             </div>
             <div className="flex justify-center pt-8">
-              <Button type="submit" disabled={!isFormValid || isLoading} className="w-48 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+              <Button type="submit" disabled={!isFormValid || isLoading} className="w-48 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
                 {isLoading ? "Memproses..." : "Masuk"}
               </Button>
             </div>

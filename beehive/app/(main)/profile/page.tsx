@@ -115,10 +115,10 @@ export default function ProfilePage() {
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel className="rounded-full border-[#4B2E05] text-[#4B2E05]">Batal</AlertDialogCancel>
+                    <AlertDialogCancel className="rounded-[15px] border-[#4B2E05] text-[#4B2E05]">Batal</AlertDialogCancel>
                     <AlertDialogAction 
                       onClick={handleLogout}
-                      className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-full"
+                      className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px]"
                     >
                       Keluar
                     </AlertDialogAction>
@@ -136,7 +136,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="hidden md:block w-[4px] h-[450px] bg-[#4B2E05] rounded-full self-center opacity-80" />
+        <div className="hidden md:block w-[4px] h-[450px] bg-[#4B2E05] rounded-[15px] self-center opacity-80" />
 
         <div className="w-full md:w-2/3 bg-[#F4B740] rounded-[15px] p-6 md:p-8 shadow-2xl">
           <h2 className="text-3xl font-bold text-[#4B2E05] mb-4">Profil</h2>

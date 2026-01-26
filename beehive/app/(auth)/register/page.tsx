@@ -149,7 +149,7 @@ export default function RegisterPage() {
               <Button 
                 type="submit"
                 disabled={!isFormValid}
-                className="w-40 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50"
+                className="w-40 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50"
               >
                 Daftar
               </Button>

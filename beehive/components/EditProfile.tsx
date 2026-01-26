@@ -114,7 +114,7 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
                 {formData.name.substring(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-[15px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <Pencil size={35} className="text-white" />
             </div>
             <input 
@@ -166,14 +166,14 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
 
           <div className="flex gap-4 w-full justify-center pt-4">
             <DialogClose asChild>
-              <Button type="button" className="w-32 h-10 bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-full text-lg font-bold shadow-md">
+              <Button type="button" className="w-32 h-10 bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] text-lg font-bold shadow-md">
                 Batal
               </Button>
             </DialogClose>
             <Button 
               disabled={!isFormValid || isLoading} 
               type="submit" 
-              className="w-32 h-10 bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-full text-lg font-bold shadow-md disabled:opacity-50"
+              className="w-32 h-10 bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] text-lg font-bold shadow-md disabled:opacity-50"
             >
               {isLoading ? <Loader2 className="animate-spin" /> : "Simpan"}
             </Button>

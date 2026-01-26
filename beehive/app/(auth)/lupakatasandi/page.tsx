@@ -32,6 +32,7 @@ export default function ForgotPasswordPage() {
       } else {
         alert(result.message || "Terjadi kesalahan.");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Gagal terhubung ke server.");
     } finally {
@@ -77,7 +78,7 @@ export default function ForgotPasswordPage() {
               <Button 
                 type="submit" 
                 disabled={!email || isLoading}
-                className="w-48 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50"
+                className="w-48 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50"
               >
                 {isLoading ? "Mengirim..." : "Kirim Link"}
               </Button>

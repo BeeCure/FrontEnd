@@ -164,7 +164,7 @@ export default function AdminDashboardPage() {
     <main className="min-h-screen w-full bg-[#FFF8E1] p-6 md:p-12 font-inder text-[#4B2E05]">
       <div className="max-w-7xl mx-auto space-y-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 lg:gap-10">
-          <div className="bg-[#F4B740] rounded-[25px] p-8 flex flex-col justify-center w-full md:w-[420px] h-40 shadow-sm transition-all">
+          <div className="bg-[#F4B740] rounded-[15px] p-8 flex flex-col justify-center w-full md:w-[420px] h-40 shadow-sm transition-all">
             <h2 className="text-7xl font-bold leading-none">{countUsers}</h2>
             <p className="text-3xl font-medium mt-1">Pengguna</p>
           </div>
@@ -183,14 +183,14 @@ export default function AdminDashboardPage() {
             {userPercent > 0 && <span className="absolute left-4 bottom-10 text-[12px] font-black text-[#4B2E05]">{userPercent}%</span>}
           </div>
 
-          <div className="bg-[#4B2E05] rounded-[25px] p-8 flex flex-col justify-center items-end w-full md:w-[420px] h-40 shadow-sm text-[#FFF8E1] transition-all">
+          <div className="bg-[#4B2E05] rounded-[15px] p-8 flex flex-col justify-center items-end w-full md:w-[420px] h-40 shadow-sm text-[#FFF8E1] transition-all">
             <h2 className="text-7xl font-bold leading-none">{countPractitioners}</h2>
             <p className="text-3xl font-medium mt-1">Praktisi</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
-          <div className="bg-[#F4B740] rounded-[25px] p-7 shadow-md border border-black/5">
+          <div className="bg-[#F4B740] rounded-[15px] p-7 shadow-md border border-black/5">
             <h3 className="text-xl font-bold text-center mb-4 uppercase tracking-[0.2em]">Permintaan Akun Praktisi</h3>
             <div className="h-[2px] bg-[#4B2E05] w-full mb-8 opacity-30" />
             <div className="space-y-5">
@@ -217,7 +217,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-[#F4B740] rounded-[25px] p-7 shadow-md border border-black/5">
+          <div className="bg-[#F4B740] rounded-[15px] p-7 shadow-md border border-black/5">
             <h3 className="text-xl font-bold text-center mb-4 uppercase tracking-[0.2em]">Daftar Akun Praktisi</h3>
             <div className="h-[2px] bg-[#4B2E05] w-full mb-8 opacity-30" />
             <div className="space-y-5">
@@ -244,11 +244,12 @@ export default function AdminDashboardPage() {
       </div>
 
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="bg-[#F4B740] border-none rounded-[25px] max-w-[450px] p-8 shadow-2xl font-inder">
+        <DialogContent className="bg-[#F4B740] border-none rounded-[15px] w-[92%] sm:w-full max-w-[450px] p-8 shadow-2xl font-inder">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-[#4B2E05] text-center pb-4 uppercase tracking-widest">
               Detail Praktisi
             </DialogTitle>
+            <DialogDescription className="sr-only">Detail informasi profil praktisi terpilih.</DialogDescription>
           </DialogHeader>
           
           {isFetchingDetail ? (
@@ -281,7 +282,7 @@ export default function AdminDashboardPage() {
               <div className="flex items-center gap-4 bg-[#FFF8E1] p-4 rounded-2xl shadow-sm overflow-hidden">
                 <RiFacebookCircleLine size={24} className="text-[#4B2E05]" />
                 <div className="flex flex-col overflow-hidden w-full">
-                  <span className="text-[10px] uppercase opacity-60 font-bold tracking-tighter">Link Facebook / Dokumen</span>
+                  <span className="text-[10px] uppercase opacity-60 font-bold tracking-tighter">Link Facebook / Sosial Media</span>
                   <a href={selectedPractitioner.facebookUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline truncate font-medium">
                     {selectedPractitioner.facebookUrl}
                   </a>
@@ -295,7 +296,7 @@ export default function AdminDashboardPage() {
       </Dialog>
 
       <Dialog open={isRejectOpen} onOpenChange={setIsRejectOpen}>
-        <DialogContent className="bg-[#FFF8E1] border-none rounded-[20px] max-w-[400px] p-8 shadow-2xl font-inder">
+        <DialogContent className="bg-[#F4B740] border-none rounded-[15px] w-[92%] sm:w-full max-w-[400px] p-8 shadow-2xl font-inder">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-[#4B2E05] text-center">Tolak Permintaan</DialogTitle>
             <DialogDescription className="text-center text-[#4B2E05]/70">Berikan alasan penolakan untuk akun praktisi ini.</DialogDescription>
@@ -304,8 +305,8 @@ export default function AdminDashboardPage() {
             <Input placeholder="Alasan penolakan..." value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} className="h-12 rounded-[15px] border-none bg-white shadow-inner focus-visible:ring-2 focus-visible:ring-[#4B2E05]" />
           </div>
           <DialogFooter className="flex flex-row gap-3 justify-center sm:justify-center">
-            <Button onClick={() => setIsRejectOpen(false)} variant="outline" className="rounded-full border-2 border-[#4B2E05] text-[#4B2E05] font-bold px-8">Batal</Button>
-            <Button onClick={handleRejectSubmit} disabled={isProcessing || !rejectReason} className="rounded-full bg-[#8E4117] hover:bg-[#7a3713] text-white font-bold px-8 shadow-md">{isProcessing ? "Proses..." : "Reject"}</Button>
+            <Button onClick={() => setIsRejectOpen(false)} variant="outline" className="rounded-[15px] border-2 border-[#4B2E05] text-[#4B2E05] font-bold px-8">Batal</Button>
+            <Button onClick={handleRejectSubmit} disabled={isProcessing || !rejectReason} className="rounded-[15px] bg-[#8E4117] hover:bg-[#7a3713] text-white font-bold px-8 shadow-md">{isProcessing ? "Proses..." : "Reject"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -159,8 +159,8 @@ export default function RoleVerificationPage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] md:w-[340px] rounded-[15px] border-none bg-[#FFF8E1] shadow-xl">
-                      <DropdownMenuItem onClick={() => { setRole("Praktisi"); setSocialLink(""); }} className="text-lg font-medium text-[#4B2E05] focus:bg-[#F4B740] cursor-pointer rounded-[10px] m-1">Praktisi</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => { setRole("Pengguna Biasa"); setSocialLink(""); }} className="text-lg font-medium text-[#4B2E05] focus:bg-[#F4B740] cursor-pointer rounded-[10px] m-1">Pengguna Biasa</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => { setRole("Praktisi"); setSocialLink(""); }} className="text-lg font-medium text-[#4B2E05] focus:bg-[#F4B740] cursor-pointer rounded-[15px] m-1">Praktisi</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => { setRole("Pengguna Biasa"); setSocialLink(""); }} className="text-lg font-medium text-[#4B2E05] focus:bg-[#F4B740] cursor-pointer rounded-[15px] m-1">Pengguna Biasa</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -171,7 +171,7 @@ export default function RoleVerificationPage() {
                   </div>
                 )}
                 <div className="flex justify-center w-full">
-                  <Button disabled={!isRoleValid || isLoading} onClick={handleRegister} className="w-40 h-10 mt-6 bg-[#3D2504] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+                  <Button disabled={!isRoleValid || isLoading} onClick={handleRegister} className="w-40 h-10 mt-6 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
                     {isLoading ? "Memproses..." : "Selesai"}
                   </Button>
                 </div>
@@ -179,7 +179,7 @@ export default function RoleVerificationPage() {
             </div>
           ) : (
             <div className="w-full max-w-[340px] flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
-              <div className="bg-[#4B2E05]/10 p-4 rounded-full mb-6 text-[#4B2E05]"><Mail size={40} /></div>
+              <div className="bg-[#4B2E05]/10 p-4 rounded-[15px] mb-6 text-[#4B2E05]"><Mail size={40} /></div>
               <h2 className="text-2xl font-bold mb-2">Verifikasi Kode</h2>
               <p className="text-sm text-center mb-8 opacity-80">Masukkan 6 digit kode yang kami kirimkan ke email Anda</p>
               <div className="space-y-8 flex flex-col items-center w-full">
@@ -190,7 +190,7 @@ export default function RoleVerificationPage() {
                     ))}
                   </InputOTPGroup>
                 </InputOTP>
-                <Button disabled={otpValue.length < 6 || isLoading} onClick={handleVerifyOTP} className="w-full h-10 bg-[#3D2504] text-[#FFF8E1] rounded-full text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+                <Button disabled={otpValue.length < 6 || isLoading} onClick={handleVerifyOTP} className="w-full h-10 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
                   {isLoading ? "Memproses..." : "Verifikasi"}
                 </Button>
                 <p className="text-xs font-medium opacity-70">

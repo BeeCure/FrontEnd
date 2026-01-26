@@ -29,7 +29,7 @@ export default function About() {
             src="/Image/logo-secondary.png"
             alt="BeeVra"
             fill
-            className="object-contain"
+            className="object-contain rounded-[15px]"
           />
         </div>
       </div>

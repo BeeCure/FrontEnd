@@ -137,7 +137,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
         
         <div className="flex flex-col md:flex-row gap-6 lg:gap-10 items-center md:items-stretch w-full">
           
-          {/* GALERI GAMBAR */}
+          {/* GAMBAR */}
           <div className="w-full md:w-[45%] grid grid-cols-2 gap-3 h-fit self-center">
             {previews.map((src, i) => (
               <div 
@@ -159,7 +159,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
           </div>
 
-          {/* KOTAK INFORMASI */}
+          {/* INFORMASI */}
           <div className="flex-1 w-full bg-[#FFF8E1] rounded-[15px] p-6 md:p-8 shadow-xl text-[#4B2E05] flex flex-col justify-between overflow-hidden border border-black/5">
             {!isEditing ? (
               <>

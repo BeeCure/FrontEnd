@@ -144,7 +144,7 @@ export default function ChangePassword({
 
           <div className="flex gap-4 w-full justify-center pt-6">
             <DialogClose asChild>
-              <button type="button" className="w-32 h-10 bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-full text-lg font-bold shadow-md transition-all active:scale-95">
+              <button type="button" className="w-32 h-10 bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] text-lg font-bold shadow-md transition-all active:scale-95">
                 Batal
               </button>
             </DialogClose>
@@ -152,7 +152,7 @@ export default function ChangePassword({
             <Button 
               type="submit"
               disabled={!isFormValid || isLoading}
-              className="w-32 h-10 bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-full text-lg font-bold shadow-md transition-all active:scale-95 disabled:opacity-50"
+              className="w-32 h-10 bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] text-lg font-bold shadow-md transition-all active:scale-95 disabled:opacity-50"
             >
               {isLoading ? <Loader2 className="animate-spin" /> : "Simpan"}
             </Button>

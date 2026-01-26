@@ -17,13 +17,12 @@ export default function Contact() {
   return (
     <section id="contact" className="w-full max-w-7xl mx-auto px-6 py-16">
       <div className="flex flex-col md:flex-row gap-10 lg:gap-16 items-start">
-
         <div className="w-full md:flex-[2] bg-[#F4B740] rounded-[15px] p-6 lg:p-8 shadow-xl">
           <h2 className="text-2xl font-bold text-[#4B2E05] text-center mb-6">
             Hubungi Kami
           </h2>
 
-          <form className="space-y-4 text-[#4B2E05]">
+          <form className="space-y-4 text-[#4B2E05] rounded-[15px]">
             <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Nama</Label>
               <Input 
@@ -33,7 +32,7 @@ export default function Contact() {
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 rounded-[15px]">
               <Label className="text-base font-bold ml-1">Email</Label>
               <Input 
                 type="email"
@@ -43,7 +42,7 @@ export default function Contact() {
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 rounded-[15px]">
               <Label className="text-base font-bold ml-1">Pesan</Label>
               <Textarea 
                 value={message}
@@ -56,7 +55,7 @@ export default function Contact() {
               <Button 
                 type="button"
                 disabled={!isFormValid}
-                className="w-28 h-9 bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-full text-base font-bold shadow-md transition-transform active:scale-95 disabled:opacity-50"
+                className="w-28 h-9 bg-[#34581B] hover:bg-[#2c4b17] rounded-[15px] text-white rounded-full text-base font-bold shadow-md transition-transform active:scale-95 disabled:opacity-50"
               >
                 Kirim
               </Button>
