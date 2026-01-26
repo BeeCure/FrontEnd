@@ -18,6 +18,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import Image from "next/image";
+import { showToast } from "@/components/Toast";
 
 export default function RoleVerificationPage() {
   const router = useRouter();
@@ -49,6 +50,7 @@ export default function RoleVerificationPage() {
 
     const basicData = JSON.parse(savedData);
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memproses pendaftaran...");
 
     const payload = {
       ...basicData,
@@ -64,14 +66,15 @@ export default function RoleVerificationPage() {
       });
       const result = await response.json();
       if (response.ok) {
+        showToast.success("Registrasi berhasil! Cek email Anda untuk kode OTP.", toastId);
         setStep("otp");
         setTimer(300);
       } else {
-        alert(result.message);
+        showToast.error(result.message || "Gagal melakukan registrasi.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Gagal terhubung ke server.");
+      showToast.error("Gagal terhubung ke server.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +85,8 @@ export default function RoleVerificationPage() {
     if (!email) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memverifikasi kode...");
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-token-otp`, {
         method: "POST",
@@ -90,15 +95,17 @@ export default function RoleVerificationPage() {
       });
       const result = await response.json();
       if (response.ok) {
-        alert(result.message);
+        showToast.success("Verifikasi Berhasil!", toastId);
         sessionStorage.removeItem("registrasi_data");
-        router.push("/login");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1500);
       } else {
-        alert(result.message);
+        showToast.error(result.message || "Kode OTP salah.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Terjadi kesalahan verifikasi.");
+      showToast.error("Terjadi kesalahan verifikasi.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -110,6 +117,8 @@ export default function RoleVerificationPage() {
     if (!email) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Mengirim ulang kode OTP...");
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/resend-token-otp`, {
         method: "POST",
@@ -117,18 +126,22 @@ export default function RoleVerificationPage() {
         body: JSON.stringify({ email }),
       });
       const result = await response.json();
-      alert(result.message);
-      if (response.ok) setTimer(300);
+      if (response.ok) {
+        showToast.success(result.message || "Kode baru telah dikirim.", toastId);
+        setTimer(300);
+      } else {
+        showToast.error(result.message || "Gagal mengirim ulang OTP.", toastId);
+      }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Gagal mengirim ulang kode.");
+      showToast.error("Gagal mengirim ulang kode.", toastId);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <main className="flex items-center justify-center w-full h-full">
+    <main className="flex items-center justify-center w-full h-full font-inder">
       <div className="flex flex-col md:flex-row-reverse w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
         
         <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
@@ -153,7 +166,7 @@ export default function RoleVerificationPage() {
                   <Label className="text-xl font-bold ml-1">Peran Pengguna</Label>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="flex h-11 w-full items-center justify-between rounded-[15px] border-none bg-[#FFF8E1] px-4 text-lg shadow-md hover:bg-[#FFF8E1] focus:ring-2 focus:ring-[#4B2E05]">
+                      <Button variant="outline" className="flex h-11 w-full items-center justify-between rounded-[15px] border-none bg-[#FFF8E1] px-4 text-lg shadow-md hover:bg-[#FFF8E1]">
                         <span className={role === "Pilih Peran" ? "opacity-50" : ""}>{role}</span>
                         <ChevronDown className="h-5 w-5 opacity-70" />
                       </Button>
@@ -180,7 +193,7 @@ export default function RoleVerificationPage() {
           ) : (
             <div className="w-full max-w-[340px] flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
               <div className="bg-[#4B2E05]/10 p-4 rounded-[15px] mb-6 text-[#4B2E05]"><Mail size={40} /></div>
-              <h2 className="text-2xl font-bold mb-2">Verifikasi Kode</h2>
+              <h2 className="text-2xl font-bold mb-2 text-center">Verifikasi Kode</h2>
               <p className="text-sm text-center mb-8 opacity-80">Masukkan 6 digit kode yang kami kirimkan ke email Anda</p>
               <div className="space-y-8 flex flex-col items-center w-full">
                 <InputOTP maxLength={6} value={otpValue} onChange={setOtpValue}>

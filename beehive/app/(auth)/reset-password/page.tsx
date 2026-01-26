@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { CiRead, CiUnread } from "react-icons/ci";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { showToast } from "@/components/Toast";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -30,6 +31,8 @@ function ResetPasswordForm() {
     if (!isFormValid || isLoading) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memperbarui kata sandi...");
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset-password`, {
         method: "POST",
@@ -43,14 +46,16 @@ function ResetPasswordForm() {
       const result = await response.json();
 
       if (response.ok) {
-        alert("Yeeayy! Password berhasil diperbarui. Silakan masuk kembali.");
-        router.push("/login");
+        showToast.success(result.message || "Kata sandi berhasil diperbarui!", toastId);
+        setTimeout(() => {
+          router.push("/login");
+        }, 1500);
       } else {
-        alert(result.message || "Gagal memperbarui password.");
+        showToast.error(result.message || "Gagal memperbarui password.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Terjadi kesalahan koneksi ke server.");
+      showToast.error("Terjadi kesalahan koneksi ke server.", toastId);
     } finally {
       setIsLoading(false);
     }

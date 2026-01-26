@@ -1,4 +1,5 @@
 import { Inder } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
 const inder = Inder({ 
   weight: '400', 
@@ -20,8 +21,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       <div className="relative z-10 w-full flex items-center justify-center">
         {children}
+        <Toaster position="top-center" />
       </div>
-      
     </div>
   );
 }

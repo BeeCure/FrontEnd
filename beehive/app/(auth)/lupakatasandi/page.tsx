@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { HiOutlineMail } from "react-icons/hi";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
+import { showToast } from "@/components/Toast";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -18,23 +19,25 @@ export default function ForgotPasswordPage() {
     if (!email || isLoading) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang mengirim link reset...");
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.toLowerCase().trim() }),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message || "Link reset kata sandi telah dikirim ke email anda.");
+        showToast.success(result.message || "Link reset kata sandi telah dikirim ke email anda.", toastId);
       } else {
-        alert(result.message || "Terjadi kesalahan.");
+        showToast.error(result.message || "Terjadi kesalahan.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Gagal terhubung ke server.");
+      showToast.error("Gagal terhubung ke server.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +94,6 @@ export default function ForgotPasswordPage() {
             </div>
           </form>
         </div>
-
       </div>
     </main>
   );

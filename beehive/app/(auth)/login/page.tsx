@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { HiOutlineMail } from "react-icons/hi";
 import { CiRead, CiUnread } from "react-icons/ci";
 import Image from "next/image";
+import { showToast } from "@/components/Toast";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +22,8 @@ export default function LoginPage() {
     if (!isFormValid || isLoading) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memverifikasi...");
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
         method: "POST",
@@ -32,14 +35,16 @@ export default function LoginPage() {
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message || "Berhasil masuk!");
-        window.location.href = "/";
+        showToast.success(result.message || "Berhasil masuk!", toastId);
+        
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
       } else {
-        alert(result.message || "Email atau password salah.");
+        showToast.error(result.message || "Email atau password salah.", toastId);
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Gagal terhubung ke server.");
+      showToast.error("Gagal terhubung ke server.", toastId);
     } finally {
       setIsLoading(false);
     }
