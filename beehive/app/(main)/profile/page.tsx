@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Pencil, KeyRound, LogOut, Clock } from "lucide-react";
 import EditProfile from "@/components/EditProfile";
 import ChangePassword from "@/components/ChangePassword";
+import { showToast } from "@/components/Toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,15 +55,25 @@ export default function ProfilePage() {
   }, [router]);
 
   const handleLogout = async () => {
+    const toastId = showToast.loading("Sedang memproses keluar...");
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
-      window.location.href = "/";
+      const result = await response.json();
+
+      if (response.ok) {
+        showToast.success(result.message, toastId);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+      } else {
+        showToast.error(result.message, toastId);
+      }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error(error);
-      window.location.href = "/";
+      showToast.error("Terjadi kesalahan koneksi.", toastId);
     }
   };
 
@@ -73,7 +84,7 @@ export default function ProfilePage() {
     : "https://github.com/shadcn.png";
 
   return (
-    <main className="h-[calc(100vh-80px)] w-full bg-[#FFF8E1] flex items-center justify-center p-4 md:p-0 overflow-hidden">
+    <main className="h-[calc(100vh-80px)] w-full bg-[#FFF8E1] flex items-center justify-center p-4 md:p-0 overflow-hidden font-inder">
       <div className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
         
         <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-[#4B2E05]">          
@@ -179,7 +190,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-
       </div>
     </main>
   );

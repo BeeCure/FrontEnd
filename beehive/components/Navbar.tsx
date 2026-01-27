@@ -64,7 +64,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center p-2">
-      <div className="w-[95%] max-w-7xl h-16 md:h-18 bg-[#FFF8E1]/30 backdrop-blur-md rounded-[15px] px-4 md:px-8 flex items-center justify-between">
+      <div className="w-[95%] max-w-7xl h-16 md:h-18 bg-[#FFF8E1]/30 md:backdrop-blur-md rounded-[15px] px-4 md:px-8 flex items-center justify-between">
         
         <Link href="/" className="flex items-center">
           <Image src="/Image/logo-primary.png" alt="BeeVra" width={160} height={50} className="h-10 md:h-12 w-auto object-contain" priority />

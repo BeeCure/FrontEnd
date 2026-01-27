@@ -23,13 +23,15 @@ export default function About() {
         </p>
       </div>
 
-      <div className="flex-1 flex justify-center items-center">
-        <div className="relative w-full max-w-[600px] aspect-square">
+      <div className="flex-1 flex justify-center items-center w-full">
+        <div className="w-full max-w-[500px]">
           <Image
             src="/Image/logo-secondary.png"
             alt="BeeVra"
-            fill
-            className="object-contain rounded-[15px]"
+            width={500}
+            height={500}
+            className="w-full h-auto object-contain rounded-[15px]"
+            priority
           />
         </div>
       </div>

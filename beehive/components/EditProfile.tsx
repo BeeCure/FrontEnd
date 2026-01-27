@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Pencil, Loader2 } from "lucide-react";
+import { showToast } from "@/components/Toast";
 
 interface EditProfileProps {
   children: React.ReactNode;
@@ -68,6 +69,8 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
     if (!isFormValid || isLoading) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memperbarui profil...");
+
     const data = new FormData();
     data.append("name", formData.name);
     data.append("phone", formData.phone);
@@ -83,14 +86,16 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
 
       const result = await response.json();
       if (response.ok) {
-        alert(result.message);
-        window.location.reload();
+        showToast.success(result.message || "Profil berhasil diperbarui!", toastId);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } else {
-        alert(result.message || "Gagal memperbarui profil");
+        showToast.error(result.message || "Gagal memperbarui profil", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Terjadi kesalahan koneksi ke server.");
+      showToast.error("Terjadi kesalahan koneksi ke server.", toastId);
     } finally {
       setIsLoading(false);
     }

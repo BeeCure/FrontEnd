@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { CiRead, CiUnread } from "react-icons/ci";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { showToast } from "@/components/Toast";
 
 export default function ChangePassword({ 
   children, 
@@ -46,6 +47,8 @@ export default function ChangePassword({
     if (!isFormValid || isLoading) return;
 
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memperbarui kata sandi...");
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/change-password`, {
         method: "POST",
@@ -61,15 +64,17 @@ export default function ChangePassword({
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message || "Kata sandi berhasil diubah!");
+        showToast.success(result.message || "Kata sandi berhasil diubah!", toastId);
         setFormData({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } else {
-        alert(result.message || "Gagal mengubah kata sandi.");
+        showToast.error(result.message || "Gagal mengubah kata sandi.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Terjadi kesalahan koneksi ke server.");
+      showToast.error("Terjadi kesalahan koneksi ke server.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -88,9 +93,8 @@ export default function ChangePassword({
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5 text-[#4B2E05]">
-          {/* Kata Sandi Lama */}
           <div className="space-y-1">
-            <Label className="text-lg font-bold ml-1">Kata Sandi Lama</Label>
+            <Label className="text-lg font-bold ml-1 text-left block">Kata Sandi Lama</Label>
             <div className="relative">
               <Input
                 type={showOld ? "text" : "password"}
@@ -104,9 +108,8 @@ export default function ChangePassword({
             </div>
           </div>
 
-          {/* Kata Sandi Baru */}
           <div className="space-y-1">
-            <Label className="text-lg font-bold ml-1">Kata Sandi Baru</Label>
+            <Label className="text-lg font-bold ml-1 text-left block">Kata Sandi Baru</Label>
             <div className="relative">
               <Input
                 type={showNew ? "text" : "password"}
@@ -120,9 +123,8 @@ export default function ChangePassword({
             </div>
           </div>
 
-          {/* Konfirmasi Kata Sandi Baru */}
           <div className="space-y-1">
-            <Label className="text-lg font-bold ml-1">Konfirmasi Kata Sandi Baru</Label>
+            <Label className="text-lg font-bold ml-1 text-left block">Konfirmasi Kata Sandi Baru</Label>
             <div className="relative">
               <Input
                 type={showConfirm ? "text" : "password"}
