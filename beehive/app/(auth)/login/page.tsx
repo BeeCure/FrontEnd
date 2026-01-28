@@ -43,6 +43,7 @@ export default function LoginPage() {
       } else {
         showToast.error(result.message || "Email atau password salah.", toastId);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       showToast.error("Gagal terhubung ke server.", toastId);
     } finally {
