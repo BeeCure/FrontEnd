@@ -5,7 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, Instagram, Facebook } from "lucide-react";
+import { 
+  RiMailLine, 
+  RiPhoneLine, 
+  RiInstagramLine, 
+  RiFacebookCircleLine 
+} from "react-icons/ri";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -22,7 +27,7 @@ export default function Contact() {
             Hubungi Kami
           </h2>
 
-          <form className="space-y-4 text-[#4B2E05] rounded-[15px]">
+          <form className="space-y-4 text-[#4B2E05]">
             <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Nama</Label>
               <Input 
@@ -32,7 +37,7 @@ export default function Contact() {
               />
             </div>
 
-            <div className="space-y-1.5 rounded-[15px]">
+            <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Email</Label>
               <Input 
                 type="email"
@@ -42,7 +47,7 @@ export default function Contact() {
               />
             </div>
 
-            <div className="space-y-1.5 rounded-[15px]">
+            <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Pesan</Label>
               <Textarea 
                 value={message}
@@ -55,7 +60,7 @@ export default function Contact() {
               <Button 
                 type="button"
                 disabled={!isFormValid}
-                className="w-28 h-9 bg-[#34581B] hover:bg-[#2c4b17] rounded-[15px] text-white rounded-full text-base font-bold shadow-md transition-transform active:scale-95 disabled:opacity-50"
+                className="w-28 h-9 bg-[#34581B] hover:bg-[#2c4b17] rounded-[15px] text-white text-base font-bold shadow-md transition-transform active:scale-95 disabled:opacity-50"
               >
                 Kirim
               </Button>
@@ -77,10 +82,10 @@ export default function Contact() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4 text-[#4B2E05]">
-            <ContactInfo icon={<Mail size={20} />} text="lembahsuhita@gmail.com" />
-            <ContactInfo icon={<Phone size={20} />} text="+62123 4567 8910" />
-            <ContactInfo icon={<Instagram size={20} />} text="@Lembah.suhita" />
-            <ContactInfo icon={<Facebook size={20} />} text="suhitabeefarm" />
+            <ContactInfo icon={<RiMailLine size={20} />} text="lembahsuhita@gmail.com" />
+            <ContactInfo icon={<RiPhoneLine size={20} />} text="+62123 4567 8910" />
+            <ContactInfo icon={<RiInstagramLine size={20} />} text="@Lembah.suhita" />
+            <ContactInfo icon={<RiFacebookCircleLine size={20} />} text="suhitabeefarm" />
           </div>
         </div>
 
@@ -92,7 +97,7 @@ export default function Contact() {
 function ContactInfo({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="p-2 rounded-lg border-[1.5px] border-[#4B2E05] text-[#4B2E05]">
+      <div className="p-2 rounded-lg border-[1.5px] border-[#4B2E05] text-[#4B2E05] flex items-center justify-center">
         {icon}
       </div>
       <span className="text-base lg:text-lg font-bold truncate">{text}</span>
