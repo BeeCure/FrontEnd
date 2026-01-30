@@ -1,12 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 export default function Hero() {
+  const [userRole, setUserRole] = useState<string | null>(null);
   const banners = ["/Image/banner1.png", "/Image/banner2.png"];
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
+          method: "GET",
+          credentials: "include",
+        });
+        const result = await response.json();
+        if (response.ok && result.success) {
+          setUserRole(result.data.role);
+        }
+      } catch (error) {
+        console.error("Error fetching role:", error);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const menuItems = [
     {
@@ -20,6 +40,8 @@ export default function Hero() {
         />
       ),
       label: "Informasi Lebah",
+      href: "/informasi",
+      visible: true
     },
     {
       icon: (
@@ -32,6 +54,8 @@ export default function Hero() {
         />
       ),
       label: "Klasifikasi Lebah",
+      href: "/klasifikasi",
+      visible: true
     },
     {
       icon: (
@@ -44,11 +68,13 @@ export default function Hero() {
         />
       ),
       label: "Monitoring Pengguna",
+      href: "/admin/dashboard",
+      visible: userRole === "SUPER_ADMIN"
     },
   ];
 
   return (
-    <section id="hero" className="w-full max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
+    <section id="hero" className="w-full max-w-7xl mx-auto px-4 py-8 flex flex-col items-center font-inder">
       <div className="w-full relative overflow-hidden rounded-[15px] shadow-sm border border-[#4B2E05]/5">
         <Carousel plugins={[Autoplay({ delay: 5000 })]} className="w-full">
           <CarouselContent>
@@ -69,9 +95,11 @@ export default function Hero() {
         </Carousel>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-4 md:gap-16 mt-16 w-full px-4">
-        {menuItems.map((item, idx) => (
-          <MenuCard key={idx} icon={item.icon} label={item.label} />
+      <div className="flex flex-wrap justify-center gap-4 md:gap-16 mt-16 w-full">
+        {menuItems.filter(item => item.visible).map((item, idx) => (
+          <Link key={idx} href={item.href} className="w-[calc(50%-8px)] md:w-full md:max-w-[280px]">
+            <MenuCard icon={item.icon} label={item.label} />
+          </Link>
         ))}
       </div>
     </section>
@@ -80,7 +108,7 @@ export default function Hero() {
 
 function MenuCard({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex flex-col items-center justify-center w-[calc(50%-8px)] md:w-full md:max-w-[280px] h-[140px] md:h-[210px] bg-[#F4B740] rounded-[15px] shadow-lg transition-all hover:scale-105 cursor-pointer p-4 group text-[#4B2E05]">
+    <div className="flex flex-col items-center justify-center w-full h-[140px] md:h-[210px] bg-[#F4B740] rounded-[15px] shadow-lg transition-all hover:scale-105 cursor-pointer p-4 group text-[#4B2E05]">
       <div className="mb-2">
         {icon}
       </div>
