@@ -203,7 +203,7 @@ export default function RoleVerificationPage() {
                     ))}
                   </InputOTPGroup>
                 </InputOTP>
-                <Button disabled={otpValue.length < 6 || isLoading} onClick={handleVerifyOTP} className="w-full h-10 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+                <Button disabled={otpValue.length < 6 || isLoading} onClick={handleVerifyOTP} className="w-40 h-10 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
                   {isLoading ? "Memproses..." : "Verifikasi"}
                 </Button>
                 <p className="text-xs font-medium opacity-70">
