@@ -22,9 +22,16 @@ function ResetPasswordForm() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
+  const isPasswordStrong = 
+    newPassword.length >= 8 && 
+    /[A-Z]/.test(newPassword) && 
+    /[a-z]/.test(newPassword) && 
+    /[0-9]/.test(newPassword);
+
   const isMatch = newPassword === confirmNewPassword;
-  const isFormValid = newPassword.length >= 8 && isMatch && token;
+  const isFormValid = isPasswordStrong && isMatch && token;
   const showError = confirmNewPassword.length > 0 && !isMatch;
+  const showPassError = newPassword.length > 0 && !isPasswordStrong;
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,8 +96,8 @@ function ResetPasswordForm() {
                 type={showNewPass ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Minimal 8 karakter"
-                className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05] pr-12 text-lg"
+                placeholder="Gunakan kombinasi kuat"
+                className={`h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05] pr-12 text-lg ${showPassError ? 'ring-2 ring-red-500' : ''}`}
               />
               <button
                 type="button"
@@ -100,6 +107,9 @@ function ResetPasswordForm() {
                 {showNewPass ? <CiUnread /> : <CiRead />}
               </button>
             </div>
+            {showPassError && (
+              <p className="text-[10px] text-red-600 font-bold ml-2 leading-tight">Minimal karakter, gunakan huruf besar, kecil, dan angka</p>
+            )}
           </div>
 
           <div className="space-y-2">

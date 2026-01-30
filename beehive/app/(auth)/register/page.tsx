@@ -22,14 +22,22 @@ export default function RegisterPage() {
     confirmPassword: ""
   });
 
+
+  const isPasswordStrong = 
+    formData.password.length >= 8 && 
+    /[A-Z]/.test(formData.password) && 
+    /[a-z]/.test(formData.password) && 
+    /[0-9]/.test(formData.password);
+
   const isPasswordMatch = formData.password === formData.confirmPassword;
   const showMatchError = formData.confirmPassword.length > 0 && !isPasswordMatch;
+  const showPasswordError = formData.password.length > 0 && !isPasswordStrong;
 
   const isFormValid = 
     formData.name !== "" && 
     formData.email !== "" && 
     formData.phone !== "" && 
-    formData.password !== "" && 
+    isPasswordStrong && 
     isPasswordMatch;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,12 +120,17 @@ export default function RegisterPage() {
                   type={showPass ? "text" : "password"}
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md pr-10 focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
+                  className={`h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md pr-10 focus-visible:ring-2 focus-visible:ring-[#4B2E05] ${showPasswordError ? 'ring-2 ring-red-500' : ''}`}
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-xl opacity-60">
                   {showPass ? <CiUnread /> : <CiRead />}
                 </button>
               </div>
+              {showPasswordError && (
+                <p className="text-[10px] text-red-600 font-bold ml-2 leading-tight">
+                  Minimal 8 karakter, gunakan huruf besar, kecil, dan angka
+                </p>
+              )}
             </div>
 
             <div className="space-y-1">

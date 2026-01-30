@@ -35,12 +35,19 @@ export default function ChangePassword({
     confirmNewPassword: "",
   });
 
+  const isPasswordStrong = 
+    formData.newPassword.length >= 8 && 
+    /[A-Z]/.test(formData.newPassword) && 
+    /[a-z]/.test(formData.newPassword) && 
+    /[0-9]/.test(formData.newPassword);
+
   const isMatch = formData.newPassword === formData.confirmNewPassword;
+  const showPassError = formData.newPassword.length > 0 && !isPasswordStrong;
+
   const isFormValid = 
     formData.oldPassword !== "" && 
-    formData.newPassword !== "" && 
-    isMatch && 
-    formData.newPassword.length >= 6;
+    isPasswordStrong && 
+    isMatch;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,12 +122,18 @@ export default function ChangePassword({
                 type={showNew ? "text" : "password"}
                 value={formData.newPassword}
                 onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-inner text-lg px-4 pr-12 focus-visible:ring-2 focus-visible:ring-[#4B2E05]"
+                className={cn(
+                  "h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-inner text-lg px-4 pr-12 focus-visible:ring-2 focus-visible:ring-[#4B2E05]",
+                  showPassError && "ring-2 ring-red-500"
+                )}
               />
               <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3 top-1/2 -translate-y-1/2 text-2xl opacity-60">
                 {showNew ? <CiUnread /> : <CiRead />}
               </button>
             </div>
+            {showPassError && (
+              <p className="text-[10px] text-red-700 font-bold ml-2 leading-tight">Minimal karakter, gunakan huruf besar, kecil, dan angka</p>
+            )}
           </div>
 
           <div className="space-y-1">
