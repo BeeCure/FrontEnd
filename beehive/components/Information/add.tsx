@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { showToast } from "@/components/Toast";
 
 export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +47,10 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
+
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang menambahkan data lebah...");
 
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => data.append(key, value));
@@ -63,18 +67,18 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Data berhasil ditambahkan!");
+        showToast.success(result.message || "Data berhasil ditambahkan!", toastId);
         setIsOpen(false);
         setFormData({ name: "", scientificName: "", genus: "", subGenus: "", discoverer: "", discoveredYear: "", distribution: "" });
         setFiles([null, null, null, null]);
         setPreviews([null, null, null, null]);
         onSuccess();
       } else {
-        alert(result.message || "Gagal menambahkan data.");
+        showToast.error(result.message || "Gagal menambahkan data.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Terjadi kesalahan koneksi.");
+      showToast.error("Terjadi kesalahan koneksi.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +91,7 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
           Tambah Data
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[90vw] md:max-w-4xl bg-[#F4B740] border-none rounded-[15px] p-8 md:p-10 shadow-2xl outline-none overflow-hidden font-inder">
+      <DialogContent className="max-w-[90vw] md:max-w-4xl bg-[#F4B740] border-none rounded-[15px] p-8 md:p-10 shadow-2xl outline-none overflow-hidden font-inder text-[#4B2E05]">
         <DialogTitle className="sr-only">Tambah Data Lebah</DialogTitle>
         <DialogDescription className="sr-only">
           Lengkapi formulir di bawah ini untuk menambahkan data spesies lebah baru ke dalam sistem.
@@ -95,7 +99,6 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
         
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
           <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start text-[#4B2E05]">
-            
             <div className="flex-1 w-full space-y-4">
               <AddField label="Nama Lebah" id="name" value={formData.name} onChange={handleInputChange} />
               <AddField label="Nama Latin" id="scientificName" value={formData.scientificName} onChange={handleInputChange} />
@@ -144,7 +147,7 @@ function AddField({ label, id, value, onChange }: { label: string; id: string; v
         value={value} 
         onChange={onChange} 
         autoComplete="off"
-        className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-inner text-[#4B2E05] font-semibold px-4 focus-visible:ring-2 focus-visible:ring-[#4B2E05]/20" 
+        className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-inner text-[#4B2E05] font-semibold px-4 focus-visible:ring-2 focus-visible:ring-[#4B2E05]/20 transition-all" 
       />
     </div>
   );
@@ -160,7 +163,7 @@ function UploadBox({ label, img, onClick }: { label: string; img: string | null;
         <Image src={img} alt="Preview" fill className="object-cover" />
       ) : (
         <div className="flex flex-col items-center gap-1">
-          <div className="p-2 bg-[#F4B740]/20 rounded-full text-[#4B2E05]">
+          <div className="p-2 bg-[#F4B740]/20 rounded-full text-[#4B2E05] group-hover:scale-110 transition-transform">
             <Plus size={20} strokeWidth={3} />
           </div>
           <span className="text-[10px] font-bold uppercase text-[#4B2E05]/60">{label}</span>

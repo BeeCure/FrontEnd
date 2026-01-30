@@ -19,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Bee } from "@/app/(main)/informasi/page";
+import { showToast } from "@/components/Toast";
 
 interface EditDeleteProps {
   bee: Bee | null;
@@ -69,6 +70,10 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
     }
   }, [bee]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && activeImgIdx !== null) {
@@ -84,7 +89,10 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!bee) return;
+    
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang memperbarui data lebah...");
+
     const data = new FormData();
     Object.entries(formData).forEach(([key, val]) => data.append(key, val));
     files.forEach((file, i) => { if (file) data.append(imageKeys[i], file); });
@@ -95,14 +103,18 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
         body: data,
         credentials: "include",
       });
+      const result = await res.json();
+      
       if (res.ok) {
-        alert("Data berhasil diperbarui!");
+        showToast.success(result.message || "Data berhasil diperbarui!", toastId);
         setIsEditing(false);
         onSuccess();
+      } else {
+        showToast.error(result.message || "Gagal memperbarui data.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Gagal memperbarui data.");
+      showToast.error("Terjadi kesalahan koneksi.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -110,20 +122,27 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
 
   const handleDelete = async () => {
     if (!bee) return;
+    
     setIsLoading(true);
+    const toastId = showToast.loading("Sedang menghapus data lebah...");
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bee/species/${bee.id}`, {
         method: "DELETE",
         credentials: "include",
       });
+      const result = await res.json();
+
       if (res.ok) {
-        alert("Data berhasil dihapus!");
+        showToast.success(result.message || "Data berhasil dihapus!", toastId);
         onOpenChange(false);
         onSuccess();
+      } else {
+        showToast.error(result.message || "Gagal menghapus data.", toastId);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Gagal menghapus data.");
+      showToast.error("Terjadi kesalahan koneksi.", toastId);
     } finally {
       setIsLoading(false);
     }
@@ -132,12 +151,11 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { onOpenChange(open); if(!open) setIsEditing(false); }}>
       <DialogContent className="max-w-[95vw] md:max-w-5xl bg-[#F4B740] border-none rounded-[15px] p-6 md:p-10 shadow-2xl outline-none overflow-hidden font-inder">
-        <DialogTitle className="sr-only">Detail {bee?.name}</DialogTitle>
+        <DialogTitle className="sr-only">{isEditing ? "Edit" : "Detail"} {bee?.name}</DialogTitle>
         <DialogDescription className="sr-only">Informasi lengkap mengenai spesifikasi lebah.</DialogDescription>
         
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-10 items-center md:items-stretch w-full">
+        <div className="flex flex-col md:flex-row gap-6 lg:gap-10 items-center md:items-stretch w-full h-full">
           
-          {/* GAMBAR */}
           <div className="w-full md:w-[45%] grid grid-cols-2 gap-3 h-fit self-center">
             {previews.map((src, i) => (
               <div 
@@ -159,7 +177,6 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
           </div>
 
-          {/* INFORMASI */}
           <div className="flex-1 w-full bg-[#FFF8E1] rounded-[15px] p-6 md:p-8 shadow-xl text-[#4B2E05] flex flex-col justify-between overflow-hidden border border-black/5">
             {!isEditing ? (
               <>
@@ -180,7 +197,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
                     <AlertDialogContent className="bg-[#FFF8E1] border-none rounded-[15px] font-inder text-[#4B2E05]">
                       <AlertDialogHeader>
                         <AlertDialogTitle className="text-xl font-bold">Hapus Data Lebah?</AlertDialogTitle>
-                        <AlertDialogDescription className="text-[#4B2E05]/80 text-sm">Tindakan ini permanen dan data tidak bisa dikembalikan.</AlertDialogDescription>
+                        <AlertDialogDescription className="text-[#4B2E05]/80 text-sm">Tindakan ini permanen dan data lebah tidak bisa dikembalikan.</AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="mt-4">
                         <AlertDialogCancel className="rounded-[15px] border-2 border-[#4B2E05] font-bold">Batal</AlertDialogCancel>
@@ -193,13 +210,13 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
               </>
             ) : (
               <form onSubmit={handleUpdate} className="space-y-2.5">
-                <EditField label="Nama" id="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                <EditField label="Nama Latin" id="scientificName" value={formData.scientificName} onChange={(e) => setFormData({...formData, scientificName: e.target.value})} />
-                <EditField label="Sub-Genus" id="subGenus" value={formData.subGenus} onChange={(e) => setFormData({...formData, subGenus: e.target.value})} />
-                <EditField label="Genus" id="genus" value={formData.genus} onChange={(e) => setFormData({...formData, genus: e.target.value})} />
-                <EditField label="Persebaran" id="distribution" value={formData.distribution} onChange={(e) => setFormData({...formData, distribution: e.target.value})} />
-                <EditField label="Penemu" id="discoverer" value={formData.discoverer} onChange={(e) => setFormData({...formData, discoverer: e.target.value})} />
-                <EditField label="Tahun" id="discoveredYear" value={formData.discoveredYear} onChange={(e) => setFormData({...formData, discoveredYear: e.target.value})} />
+                <EditField label="Nama" id="name" value={formData.name} onChange={handleInputChange} />
+                <EditField label="Nama Latin" id="scientificName" value={formData.scientificName} onChange={handleInputChange} />
+                <EditField label="Sub-Genus" id="subGenus" value={formData.subGenus} onChange={handleInputChange} />
+                <EditField label="Genus" id="genus" value={formData.genus} onChange={handleInputChange} />
+                <EditField label="Persebaran" id="distribution" value={formData.distribution} onChange={handleInputChange} />
+                <EditField label="Penemu" id="discoverer" value={formData.discoverer} onChange={handleInputChange} />
+                <EditField label="Tahun" id="discoveredYear" value={formData.discoveredYear} onChange={handleInputChange} />
                 
                 <div className="flex justify-end gap-3 mt-6">
                   <Button type="button" onClick={() => setIsEditing(false)} className="bg-[#8E4117] text-white rounded-[15px] px-8 h-9 font-bold shadow-md">Batal</Button>
@@ -232,7 +249,7 @@ function EditField({ label, id, value, onChange }: { label: string, id: string, 
       <span className="text-[10px] font-bold opacity-60 uppercase tracking-widest text-left">{label}</span>
       <Input 
         id={id} 
-        value={value || ""} 
+        value={value} 
         onChange={onChange} 
         className="h-8 rounded-[15px] border-none bg-[#F4B740]/10 shadow-inner text-[#4B2E05] font-bold focus-visible:ring-1 px-4 text-sm" 
       />

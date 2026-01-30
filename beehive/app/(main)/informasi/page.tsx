@@ -89,7 +89,7 @@ export default function InformasiPage() {
 
   return (
     <main className="h-100vh w-full bg-[#FFF8E1] px-4 md:mt-1 mt-0 md:px-16 flex flex-col justify-between py-6 overflow-hidden font-inder text-[#4B2E05]">
-      <div className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-4 gap-4">
+      <div className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-0 gap-4">
         <div className="flex w-full md:w-auto justify-between gap-2">
           {filterButtons.map((btn) => (
             <Button 
@@ -160,7 +160,7 @@ export default function InformasiPage() {
 
       <EditDeleteBeeDialog bee={selectedBee} isOpen={isDetailOpen} onOpenChange={setIsDetailOpen} onSuccess={fetchBees} />
 
-      <div className="mt-4">
+      <div className="mt-0">
         {totalPages > 1 && (
           <Pagination>
             <PaginationContent>
