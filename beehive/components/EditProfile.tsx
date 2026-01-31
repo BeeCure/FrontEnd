@@ -13,7 +13,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Pencil, Loader2 } from "lucide-react";
+import { RiPencilLine, RiLoader2Line } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 import { showToast } from "@/components/Toast";
 
 interface EditProfileProps {
@@ -113,14 +114,20 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
             className="relative group cursor-pointer" 
             onClick={() => fileInputRef.current?.click()}
           >
-            <Avatar className="w-32 h-32 border-4 border-[#FFF8E1] shadow-lg">
-              <AvatarImage src={previewUrl || ""} className="object-cover" />
-              <AvatarFallback className="bg-[#FFF8E1] text-[#4B2E05] font-bold text-2xl">
-                {formData.name.substring(0, 2).toUpperCase()}
-              </AvatarFallback>
+            <Avatar className="w-32 h-32 border-4 border-[#FFF8E1] shadow-lg bg-[#FFF8E1] flex items-center justify-center overflow-hidden">
+              {previewUrl ? (
+                <>
+                  <AvatarImage src={previewUrl} className="object-cover" />
+                  <AvatarFallback className="bg-[#FFF8E1] text-[#4B2E05] font-bold text-2xl">
+                    {formData.name.substring(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </>
+              ) : (
+                <CgProfile className="w-full h-full text-[#F4B740]" />
+              )}
             </Avatar>
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-[15px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <Pencil size={35} className="text-white" />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <RiPencilLine size={35} className="text-white" />
             </div>
             <input 
               type="file" 
@@ -180,7 +187,7 @@ export default function EditProfile({ children, initialData }: EditProfileProps)
               type="submit" 
               className="w-32 h-10 bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] text-lg font-bold shadow-md disabled:opacity-50"
             >
-              {isLoading ? <Loader2 className="animate-spin" /> : "Simpan"}
+              {isLoading ? <RiLoader2Line className="animate-spin" size={24} /> : "Simpan"}
             </Button>
           </div>
         </form>

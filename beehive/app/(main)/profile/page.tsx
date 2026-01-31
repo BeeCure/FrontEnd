@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Pencil, KeyRound, LogOut, Clock } from "lucide-react";
+import { RiPencilLine, RiLockPasswordLine, RiLogoutBoxRLine, RiTimeLine } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 import EditProfile from "@/components/EditProfile";
 import ChangePassword from "@/components/ChangePassword";
 import { showToast } from "@/components/Toast";
@@ -81,7 +82,7 @@ export default function ProfilePage() {
 
   const avatarSrc = user.avatarUrl 
     ? `${user.avatarUrl}${user.avatarUrl.includes('?') ? '&' : '?'}t=${new Date().getTime()}` 
-    : "https://github.com/shadcn.png";
+    : null;
 
   return (
     <main className="h-[calc(100vh-80px)] w-full bg-[#FFF8E1] flex items-center justify-center p-4 md:p-0 overflow-hidden font-inder">
@@ -89,24 +90,30 @@ export default function ProfilePage() {
         
         <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-[#4B2E05]">          
           <div className="flex flex-col items-center w-full">
-            <Avatar className="w-36 h-36 md:w-40 md:h-40 border-4 border-[#F4B740] mb-8 md:mb-12 shadow-lg">
-              <AvatarImage src={avatarSrc} alt={user.name} className="object-cover" />
-              <AvatarFallback className="bg-gray-300 text-3xl">
-                {user.name.substring(0, 2).toUpperCase()}
-              </AvatarFallback>
+            <Avatar className="w-36 h-36 md:w-40 md:h-40 border-4 border-[#F4B740] mb-8 md:mb-12 shadow-lg bg-[#FFF8E1] flex items-center justify-center">
+              {avatarSrc ? (
+                <>
+                  <AvatarImage src={avatarSrc} alt={user.name} className="object-cover" />
+                  <AvatarFallback className="bg-gray-300 text-3xl">
+                    {user.name.substring(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </>
+              ) : (
+                <CgProfile className="w-full h-full text-[#F4B740]" />
+              )}
             </Avatar>
 
             <div className="w-full space-y-1">
               <EditProfile initialData={user}>
                 <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all px-2">
-                  <Pencil size={22} />
+                  <RiPencilLine size={22} />
                   <span className="text-lg font-medium">Edit Profil</span>
                 </div>
               </EditProfile>
               
               <ChangePassword email={user.email}>
                 <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all px-2">
-                  <KeyRound size={22} />
+                  <RiLockPasswordLine size={22} />
                   <span className="text-lg font-medium">Ganti Kata Sandi</span>
                 </div>
               </ChangePassword>
@@ -114,7 +121,7 @@ export default function ProfilePage() {
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all text-red-700 md:text-[#4B2E05] px-2">
-                    <LogOut size={22} />
+                    <RiLogoutBoxRLine size={22} />
                     <span className="text-lg font-medium">Keluar</span>
                   </div>
                 </AlertDialogTrigger>
@@ -139,7 +146,7 @@ export default function ProfilePage() {
 
               {user.lastLogin && (
                 <div className="flex items-center gap-2 pt-4 opacity-60 px-2">
-                  <Clock size={14} />
+                  <RiTimeLine size={16} />
                   <span className="text-[10px] md:text-xs">Terakhir masuk: <br/> {user.lastLogin}</span>
                 </div>
               )}

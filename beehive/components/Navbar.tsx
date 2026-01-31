@@ -5,7 +5,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, Home, BookOpen, Info, ChevronRight, LayoutDashboard } from "lucide-react";
+import { 
+  RiMenu3Line, 
+  RiHome4Line, 
+  RiBookOpenLine, 
+  RiInformationLine, 
+  RiArrowRightSLine, 
+  RiDashboardLine 
+} from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -16,7 +24,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
@@ -52,13 +60,9 @@ export default function Navbar() {
 
   if (!mounted) return null;
 
-  const getInitials = (name: string) => {
-    return name ? name.split(" ").map((n) => n[0]).join("").toUpperCase().substring(0, 2) : "??";
-  };
-
   const avatarSrc = user?.avatarUrl 
     ? `${user.avatarUrl}${user.avatarUrl.includes('?') ? '&' : '?'}t=${Date.now()}` 
-    : undefined;
+    : null;
 
   const navItemStyle = "group bg-transparent text-[#4B2E05] text-lg font-medium px-4 py-2 flex items-center justify-center hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent data-[active]:bg-transparent border-none shadow-none ring-0 outline-none transition-none cursor-pointer";
 
@@ -79,7 +83,7 @@ export default function Navbar() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="bg-transparent border-none shadow-none">
                   <ul className="flex flex-col w-[200px] p-2 bg-[#FFF8E1] rounded-[18px] border border-[#4B2E05]/10 shadow-xl">
-                    <ListItem href="/#hero" title="Layanan Utama" />
+                    <ListItem href="/" title="Layanan Utama" />
                     <ListItem href="/#about" title="Mengenal BeeVra" />
                     <ListItem href="/#contact" title="Hubungi Kami" />
                   </ul>
@@ -116,27 +120,34 @@ export default function Navbar() {
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <button className="p-2 text-[#4B2E05] outline-none"><Menu size={28} /></button>
+                <button className="p-2 text-[#4B2E05] outline-none"><RiMenu3Line size={28} /></button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-[#FFF8E1] border-none text-[#4B2E05] w-[300px] sm:w-[350px]">
                 <SheetHeader className="text-left border-b border-[#4B2E05]/10 pb-6">
                   <SheetTitle><Image src="/Image/logo-primary.png" alt="BeeVra" width={120} height={40} className="h-8 w-auto object-contain" /></SheetTitle>
+                  <SheetDescription className="sr-only">Menu navigasi mobile BeeVra</SheetDescription>
                 </SheetHeader>
                 <div className="flex flex-col gap-1 mt-8">
-                  <Link href="/" className="flex items-center gap-3 px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><Home size={20} /> Beranda</Link>
-                  <Link href="/klasifikasi" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><BookOpen size={20} /> Klasifikasi Lebah</div><ChevronRight size={18} className="opacity-40" /></Link>
-                  <Link href="/informasi" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><Info size={20} /> Informasi Lebah</div><ChevronRight size={18} className="opacity-40" /></Link>
+                  <Link href="/" className="flex items-center gap-3 px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><RiHome4Line size={20} /> Beranda</Link>
+                  <Link href="/klasifikasi" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><RiBookOpenLine size={20} /> Klasifikasi Lebah</div><RiArrowRightSLine size={18} className="opacity-40" /></Link>
+                  <Link href="/informasi" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><RiInformationLine size={20} /> Informasi Lebah</div><RiArrowRightSLine size={18} className="opacity-40" /></Link>
                   {user?.role === "SUPER_ADMIN" && (
-                    <Link href="/admin/dashboard" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><LayoutDashboard size={20} /> Monitoring</div><ChevronRight size={18} className="opacity-40" /></Link>
+                    <Link href="/admin/dashboard" className="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-[#F4B740]/20 font-semibold text-lg"><div className="flex items-center gap-3"><RiDashboardLine size={20} /> Monitoring</div><RiArrowRightSLine size={18} className="opacity-40" /></Link>
                   )}
                 </div>
                 {!isLoading && (
                   <div className="absolute bottom-8 left-6 right-6">
                     {user ? (
                       <Link href="/profile" className="p-4 bg-[#F4B740] rounded-2xl flex items-center gap-4 shadow-md">
-                        <Avatar className="w-10 h-10 border-2 border-[#FFF8E1]">
-                          <AvatarImage src={avatarSrc} />
-                          <AvatarFallback className="bg-[#4B2E05] text-[#FFF8E1] font-bold">{getInitials(user.name)}</AvatarFallback>
+                        <Avatar className="w-10 h-10 border-2 border-[#FFF8E1] bg-[#FFF8E1] flex items-center justify-center">
+                          {avatarSrc ? (
+                            <>
+                              <AvatarImage src={avatarSrc} />
+                              <AvatarFallback className="sr-only" />
+                            </>
+                          ) : (
+                            <CgProfile className="w-full h-full text-[#F4B740]" />
+                          )}
                         </Avatar>
                         <div className="flex flex-col truncate"><span className="font-bold text-sm leading-none truncate">{user.name}</span><span className="text-[10px] opacity-70">Lihat Profil</span></div>
                       </Link>
@@ -156,9 +167,15 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-4">
               {user ? (
                 <Link href="/profile">
-                  <Avatar className="w-11 h-11 border-2 border-[#F4B740] shadow-sm hover:scale-105 transition-transform">
-                    <AvatarImage src={avatarSrc} alt={user.name} />
-                    <AvatarFallback className="bg-[#4B2E05] text-[#FFF8E1] font-bold">{getInitials(user.name)}</AvatarFallback>
+                  <Avatar className="w-11 h-11 border-2 border-[#F4B740] shadow-sm hover:scale-105 transition-transform bg-transparent flex items-center justify-center">
+                    {avatarSrc ? (
+                      <>
+                        <AvatarImage src={avatarSrc} alt={user.name} />
+                        <AvatarFallback className="sr-only" />
+                      </>
+                    ) : (
+                      <CgProfile className="w-full h-full text-[#F4B740] " />
+                    )}
                   </Avatar>
                 </Link>
               ) : (
