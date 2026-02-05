@@ -166,7 +166,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
                   isEditing ? "cursor-pointer hover:border-[#4B2E05]/40 group/img" : "cursor-default"
                 )}
               >
-                <Image src={src || "/Image/Lebah1.png"} alt="Bee Part" fill className="object-cover" unoptimized />
+                <Image src={src} alt="Bee Part" fill className="object-cover" unoptimized />
                 {isEditing && (
                   <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
                     <Camera size={24} className="text-white" />

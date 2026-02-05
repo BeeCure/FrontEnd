@@ -108,7 +108,7 @@ function ResetPasswordForm() {
               </button>
             </div>
             {showPassError && (
-              <p className="text-[10px] text-red-600 font-bold ml-2 leading-tight">Minimal karakter, gunakan huruf besar, kecil, dan angka</p>
+              <p className="text-[10px] text-red-600 font-bold ml-2 leading-tight">Minimal 8 karakter, gunakan huruf besar, kecil, dan angka</p>
             )}
           </div>
 

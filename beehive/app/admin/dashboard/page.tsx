@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { RiFacebookCircleLine, RiMailLine, RiPhoneLine, RiUser3Line } from "react-icons/ri";
 import { PieChart, Pie, Cell, ResponsiveContainer, PieLabelRenderProps } from "recharts";
@@ -33,12 +34,35 @@ interface ChartItem {
 }
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
   const [practitioners, setPractitioners] = useState<UserData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isVerifying, setIsVerifying] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedPractitioner, setSelectedPractitioner] = useState<PractitionerDetail | null>(null);
   const [isFetchingDetail, setIsFetchingDetail] = useState(false);
+
+  const checkAccess = useCallback(async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, { 
+        credentials: "include" 
+      });
+      
+      const result = await res.json();
+
+      if (!result.success || result.data.role !== "SUPER_ADMIN") {
+        router.push("/403");
+        return;
+      }
+      
+      setIsVerifying(false);
+      fetchData();
+    } catch (error) {
+      console.error("Auth error:", error);
+      router.push("/forbidden");
+    }
+  }, [router]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -54,8 +78,8 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     setMounted(true);
-    fetchData();
-  }, [fetchData]);
+    checkAccess();
+  }, [checkAccess]);
 
   const handleCardClick = async (userId: string) => {
     setIsDetailOpen(true);
@@ -70,6 +94,14 @@ export default function AdminDashboardPage() {
       setIsFetchingDetail(false);
     }
   };
+
+  if (isVerifying || isLoading) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-[#FFF8E1]">
+        <Loader2 className="animate-spin text-[#4B2E05]" size={48} />
+      </div>
+    );
+  }
 
   const pendingRequests = practitioners.filter(p => p.approvalStatus === "PENDING");
   const activeList = practitioners.filter(p => p.status === "ACTIVE" && p.approvalStatus === "APPROVED");
@@ -95,8 +127,6 @@ export default function AdminDashboardPage() {
       </text>
     );
   };
-
-  if (isLoading) return <div className="h-full w-full flex items-center justify-center bg-[#FFF8E1]"><Loader2 className="animate-spin text-[#4B2E05]" size={48} /></div>;
 
   return (
     <main className="min-h-full lg:h-full w-full bg-[#FFF8E1] p-4 md:px-12 md:py-8 mt-4 md:mt-2 font-inder text-[#4B2E05] flex flex-col">

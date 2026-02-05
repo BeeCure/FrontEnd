@@ -75,8 +75,8 @@ export default function AkunAktif({ list, onCardClick, refreshData }: AkunAktifP
         <DialogContent className="bg-[#F4B740] border-none rounded-[15px] w-[92%] sm:w-full max-w-[400px] p-8 shadow-2xl font-inder text-[#4B2E05]">
           <DialogHeader><DialogTitle className="text-2xl font-bold text-center text-[#4B2E05]">Nonaktifkan Akun</DialogTitle><DialogDescription className="text-center text-[#4B2E05]/80 font-inder">Alasan akun dinonaktifkan.</DialogDescription></DialogHeader>
           <div className="py-6 space-y-4">
-            <Input placeholder="Alasan (Wajib)..." value={inactivateData.reason} onChange={(e) => setInactivateData({...inactivateData, reason: e.target.value})} className="h-12 rounded-[15px] border-none bg-white shadow-inner px-4" />
-            <Input placeholder="Catatan (Opsional)..." value={inactivateData.note} onChange={(e) => setInactivateData({...inactivateData, note: e.target.value})} className="h-12 rounded-[15px] border-none bg-white shadow-inner px-4 opacity-80" />
+            <Input placeholder="Alasan" value={inactivateData.reason} onChange={(e) => setInactivateData({...inactivateData, reason: e.target.value})} className="h-12 rounded-[15px] border-none bg-white shadow-inner px-4" />
+            <Input placeholder="Catatan" value={inactivateData.note} onChange={(e) => setInactivateData({...inactivateData, note: e.target.value})} className="h-12 rounded-[15px] border-none bg-white shadow-inner px-4 opacity-80" />
           </div>
           <DialogFooter className="flex flex-row gap-3 justify-center">
             <Button onClick={() => setIsInactivateOpen(false)} variant="outline" className="rounded-[15px] border-2 border-[#4B2E05] text-[#4B2E05] font-bold px-8">Batal</Button>
