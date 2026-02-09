@@ -9,6 +9,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { CiRead, CiUnread } from "react-icons/ci";
 import Image from "next/image";
 import { showToast } from "@/components/Toast";
+import { motion } from "motion/react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,8 +54,18 @@ export default function LoginPage() {
 
   return (
     <main className="flex items-center justify-center w-full h-full">
-      <div className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
-        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
+      <motion.div 
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5"
+      >
+        <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12"
+        >
           <Image 
             src="/Image/logo-secondary-choco.png" 
             alt="Bee HIVE Logo" 
@@ -63,18 +74,38 @@ export default function LoginPage() {
             className="w-full max-w-[320px] object-contain"
             priority
           />
-        </div>
+        </motion.div>
         <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
-        <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
-          <div className="mb-10">
+        <motion.div 
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]"
+        >
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mb-10"
+          >
             <HiOutlineMail size={110} className="text-[#4B2E05]/90 drop-shadow-sm" />
-          </div>
+          </motion.div>
           <form onSubmit={handleLogin} className="w-full max-w-[340px] space-y-6">
-            <div className="space-y-2">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="space-y-2"
+            >
               <Label htmlFor="email" className="text-xl font-bold ml-1">Email</Label>
               <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" />
-            </div>
-            <div className="space-y-2">
+            </motion.div>
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="space-y-2"
+            >
               <Label htmlFor="password" className="text-xl font-bold ml-1">Kata Sandi</Label>
               <div className="relative">
                 <Input id="password" type={showPassword ? "text" : "password"} value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05] pr-12 text-lg" />
@@ -82,19 +113,29 @@ export default function LoginPage() {
                   {showPassword ? <CiUnread /> : <CiRead />}
                 </button>
               </div>
-            </div>
-            <div className="flex justify-between items-center px-1 text-[13px] font-medium text-[#4B2E05]">
+            </motion.div>
+            <motion.div 
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="flex justify-between items-center px-1 text-[13px] font-medium text-[#4B2E05]"
+            >
               <p>Belum Punya Akun? <Link href="/register" className="font-bold hover:underline">Daftar</Link></p>
               <Link href="/lupakatasandi" className="cursor-pointer hover:underline">Lupa Kata Sandi?</Link>
-            </div>
-            <div className="flex justify-center pt-8">
+            </motion.div>
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="flex justify-center pt-8"
+            >
               <Button type="submit" disabled={!isFormValid || isLoading} className="w-40 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
                 {isLoading ? "Memproses..." : "Masuk"}
               </Button>
-            </div>
+            </motion.div>
           </form>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }

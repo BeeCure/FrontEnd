@@ -98,11 +98,13 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
     files.forEach((file, i) => { if (file) data.append(imageKeys[i], file); });
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bee/species/${bee.id}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+      const res = await fetch(`${baseUrl}/api/bee/species/${bee.id}`, {
         method: "PUT",
         body: data,
         credentials: "include",
       });
+      
       const result = await res.json();
       
       if (res.ok) {
@@ -127,21 +129,33 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
     const toastId = showToast.loading("Sedang menghapus data lebah...");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bee/species/${bee.id}`, {
+      // Membersihkan URL dari trailing slash untuk menghindari double slash //
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+      
+      const res = await fetch(`${baseUrl}/api/bee/species/${bee.id}`, {
         method: "DELETE",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
         credentials: "include",
       });
-      const result = await res.json();
+
+      let result;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        result = await res.json();
+      }
 
       if (res.ok) {
-        showToast.success(result.message || "Data berhasil dihapus!", toastId);
+        showToast.success(result?.message || "Data berhasil dihapus!", toastId);
         onOpenChange(false);
         onSuccess();
       } else {
-        showToast.error(result.message || "Gagal menghapus data.", toastId);
+        showToast.error(result?.message || `Gagal menghapus data (Error ${res.status})`, toastId);
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      console.error("Delete Error:", error);
       showToast.error("Terjadi kesalahan koneksi.", toastId);
     } finally {
       setIsLoading(false);
@@ -166,7 +180,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
                   isEditing ? "cursor-pointer hover:border-[#4B2E05]/40 group/img" : "cursor-default"
                 )}
               >
-                <Image src={src} alt="Bee Part" fill className="object-cover" unoptimized />
+                <Image src={src || "/Image/Lebah1.png"} alt="Bee Part" fill className="object-cover" unoptimized />
                 {isEditing && (
                   <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
                     <Camera size={24} className="text-white" />

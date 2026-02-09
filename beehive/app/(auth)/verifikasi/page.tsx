@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/input-otp";
 import Image from "next/image";
 import { showToast } from "@/components/Toast";
+import { motion } from "motion/react";
 
 export default function RoleVerificationPage() {
   const router = useRouter();
@@ -142,9 +143,18 @@ export default function RoleVerificationPage() {
 
   return (
     <main className="flex items-center justify-center w-full h-full font-inder">
-      <div className="flex flex-col md:flex-row-reverse w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
-        
-        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
+      <motion.div 
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row-reverse w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5"
+      >
+        <motion.div 
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12"
+        >
           <Image 
             src="/Image/logo-secondary-choco.png" 
             alt="Bee HIVE Logo" 
@@ -153,16 +163,33 @@ export default function RoleVerificationPage() {
             className="w-full max-w-[320px] object-contain"
             priority
           />
-        </div>
+        </motion.div>
 
         <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
 
-        <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
+        <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]"
+        >
           {step === "role" ? (
             <div className="w-full max-w-[340px] flex flex-col items-center">
-              <h2 className="text-3xl font-bold mb-12 tracking-widest uppercase text-center leading-tight">Verifikasi Peran</h2>
+              <motion.h2 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="text-3xl font-bold mb-12 tracking-widest uppercase text-center leading-tight"
+              >
+                Verifikasi Peran
+              </motion.h2>
               <div className="w-full space-y-8">
-                <div className="space-y-2">
+                <motion.div 
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                  className="space-y-2"
+                >
                   <Label className="text-xl font-bold ml-1">Peran Pengguna</Label>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -176,37 +203,89 @@ export default function RoleVerificationPage() {
                       <DropdownMenuItem onClick={() => { setRole("Pengguna Biasa"); setSocialLink(""); }} className="text-lg font-medium text-[#4B2E05] focus:bg-[#F4B740] cursor-pointer rounded-[15px] m-1">Pengguna Biasa</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </div>
+                </motion.div>
                 {role === "Praktisi" && (
-                  <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <motion.div 
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="space-y-2"
+                  >
                     <Label className="text-xl font-bold ml-1">Link Sosial Media</Label>
                     <Input value={socialLink} onChange={(e) => setSocialLink(e.target.value)} className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05] text-lg px-4" />
-                  </div>
+                  </motion.div>
                 )}
-                <div className="flex justify-center w-full">
+                <motion.div 
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                  className="flex justify-center w-full"
+                >
                   <Button disabled={!isRoleValid || isLoading} onClick={handleRegister} className="w-40 h-10 mt-6 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
                     {isLoading ? "Memproses..." : "Selesai"}
                   </Button>
-                </div>
+                </motion.div>
               </div>
             </div>
           ) : (
-            <div className="w-full max-w-[340px] flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
-              <div className="bg-[#4B2E05]/10 p-4 rounded-[15px] mb-6 text-[#4B2E05]"><Mail size={40} /></div>
-              <h2 className="text-2xl font-bold mb-2 text-center">Verifikasi Kode</h2>
-              <p className="text-sm text-center mb-8 opacity-80">Masukkan 6 digit kode yang kami kirimkan ke email Anda</p>
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="w-full max-w-[340px] flex flex-col items-center"
+            >
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="bg-[#4B2E05]/10 p-4 rounded-[15px] mb-6 text-[#4B2E05]"
+              >
+                <Mail size={40} />
+              </motion.div>
+              <motion.h2 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-2xl font-bold mb-2 text-center"
+              >
+                Verifikasi Kode
+              </motion.h2>
+              <motion.p 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-sm text-center mb-8 opacity-80"
+              >
+                Masukkan 6 digit kode yang kami kirimkan ke email Anda
+              </motion.p>
               <div className="space-y-8 flex flex-col items-center w-full">
-                <InputOTP maxLength={6} value={otpValue} onChange={setOtpValue}>
-                  <InputOTPGroup className="gap-2">
-                    {[0, 1, 2, 3, 4, 5].map((i) => (
-                      <InputOTPSlot key={i} index={i} className="w-10 h-12 md:w-12 md:h-14 rounded-xl border-none bg-[#FFF8E1] shadow-md text-xl font-bold text-[#4B2E05]" />
-                    ))}
-                  </InputOTPGroup>
-                </InputOTP>
-                <Button disabled={otpValue.length < 6 || isLoading} onClick={handleVerifyOTP} className="w-40 h-10 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
-                  {isLoading ? "Memproses..." : "Verifikasi"}
-                </Button>
-                <p className="text-xs font-medium opacity-70">
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <InputOTP maxLength={6} value={otpValue} onChange={setOtpValue}>
+                    <InputOTPGroup className="gap-2">
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <InputOTPSlot key={i} index={i} className="w-10 h-12 md:w-12 md:h-14 rounded-xl border-none bg-[#FFF8E1] shadow-md text-xl font-bold text-[#4B2E05]" />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                </motion.div>
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  <Button disabled={otpValue.length < 6 || isLoading} onClick={handleVerifyOTP} className="w-40 h-10 bg-[#3D2504] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+                    {isLoading ? "Memproses..." : "Verifikasi"}
+                  </Button>
+                </motion.div>
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="text-xs font-medium opacity-70"
+                >
                   Tidak menerima kode?{" "}
                   <button 
                     type="button" 
@@ -216,12 +295,12 @@ export default function RoleVerificationPage() {
                   >
                     {timer > 0 ? `Kirim Ulang (${timer}s)` : "Kirim Ulang"}
                   </button>
-                </p>
+                </motion.p>
               </div>
-            </div>
+            </motion.div>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }

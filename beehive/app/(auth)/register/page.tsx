@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CiRead, CiUnread } from "react-icons/ci";
 import Image from "next/image";
+import { motion } from "motion/react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,7 +22,6 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: ""
   });
-
 
   const isPasswordStrong = 
     formData.password.length >= 8 && 
@@ -61,9 +61,18 @@ export default function RegisterPage() {
 
   return (
     <main className="flex items-center justify-center w-full h-full">
-      <div className="flex flex-col md:flex-row-reverse w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
-        
-        <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
+      <motion.div 
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row-reverse w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5"
+      >
+        <motion.div 
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12"
+        >
           <Image 
             src="/Image/logo-secondary-choco.png" 
             alt="Bee HIVE Logo" 
@@ -72,15 +81,32 @@ export default function RegisterPage() {
             className="w-full max-w-[320px] object-contain"
             priority
           />
-        </div>
+        </motion.div>
 
         <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
 
-        <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
-          <h2 className="text-3xl font-bold mb-6 tracking-widest uppercase">Registrasi</h2>
+        <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]"
+        >
+          <motion.h2 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-3xl font-bold mb-6 tracking-widest uppercase"
+          >
+            Registrasi
+          </motion.h2>
 
           <form onSubmit={handleRegister} className="w-full max-w-[360px] space-y-3">
-            <div className="space-y-1">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+              className="space-y-1"
+            >
               <Label htmlFor="name" className="text-base font-bold ml-1">Nama Lengkap</Label>
               <Input 
                 id="name"
@@ -88,9 +114,14 @@ export default function RegisterPage() {
                 onChange={handleInputChange}
                 className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
               />
-            </div>
+            </motion.div>
 
-            <div className="space-y-1">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
+              className="space-y-1"
+            >
               <Label htmlFor="email" className="text-base font-bold ml-1">Email</Label>
               <Input 
                 id="email"
@@ -99,9 +130,14 @@ export default function RegisterPage() {
                 onChange={handleInputChange}
                 className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
               />
-            </div>
+            </motion.div>
 
-            <div className="space-y-1">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+              className="space-y-1"
+            >
               <Label htmlFor="phone" className="text-base font-bold ml-1">No Telepon</Label>
               <Input 
                 id="phone"
@@ -110,9 +146,14 @@ export default function RegisterPage() {
                 onChange={handleInputChange}
                 className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" 
               />
-            </div>
+            </motion.div>
 
-            <div className="space-y-1">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.7 }}
+              className="space-y-1"
+            >
               <Label htmlFor="password" className="text-base font-bold ml-1">Kata Sandi</Label>
               <div className="relative">
                 <Input 
@@ -131,9 +172,14 @@ export default function RegisterPage() {
                   Minimal 8 karakter, gunakan huruf besar, kecil, dan angka
                 </p>
               )}
-            </div>
+            </motion.div>
 
-            <div className="space-y-1">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.8 }}
+              className="space-y-1"
+            >
               <Label htmlFor="confirmPassword" className="text-base font-bold ml-1">Konfirmasi Kata Sandi</Label>
               <div className="relative">
                 <Input 
@@ -150,15 +196,25 @@ export default function RegisterPage() {
               {showMatchError && (
                 <p className="text-[10px] text-red-600 font-bold ml-2">Kata sandi tidak cocok</p>
               )}
-            </div>
+            </motion.div>
 
-            <div className="flex justify-end px-1 pt-1">
+            <motion.div 
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.9 }}
+              className="flex justify-end px-1 pt-1"
+            >
               <p className="text-[13px] font-medium text-[#4B2E05]">
                 Sudah Punya Akun? <Link href="/login" className="font-bold cursor-pointer hover:underline">Masuk</Link>
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex justify-center pt-4">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 1 }}
+              className="flex justify-center pt-4"
+            >
               <Button 
                 type="submit"
                 disabled={!isFormValid}
@@ -166,10 +222,10 @@ export default function RegisterPage() {
               >
                 Daftar
               </Button>
-            </div>
+            </motion.div>
           </form>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }

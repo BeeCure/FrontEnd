@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { motion } from "motion/react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -86,118 +87,149 @@ export default function ProfilePage() {
 
   return (
     <main className="h-[calc(100vh-80px)] w-full bg-[#FFF8E1] flex items-center justify-center p-4 md:p-0 overflow-hidden font-inder">
-      <div className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
-        
-        <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-[#4B2E05]">          
+      <motion.div 
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12"
+      >
+        <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-full md:w-1/3 flex flex-col items-center md:items-start text-[#4B2E05]"
+        >          
           <div className="flex flex-col items-center w-full">
-            <Avatar className="w-36 h-36 md:w-40 md:h-40 border-4 border-[#F4B740] mb-8 md:mb-12 shadow-lg bg-[#FFF8E1] flex items-center justify-center">
-              {avatarSrc ? (
-                <>
-                  <AvatarImage src={avatarSrc} alt={user.name} className="object-cover" />
-                  <AvatarFallback className="bg-gray-300 text-3xl">
-                    {user.name.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </>
-              ) : (
-                <CgProfile className="w-full h-full text-[#F4B740]" />
-              )}
-            </Avatar>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Avatar className="w-36 h-36 md:w-40 md:h-40 border-4 border-[#F4B740] mb-8 md:mb-12 shadow-lg bg-[#FFF8E1] flex items-center justify-center">
+                {avatarSrc ? (
+                  <>
+                    <AvatarImage src={avatarSrc} alt={user.name} className="object-cover" />
+                    <AvatarFallback className="bg-gray-300 text-3xl">
+                      {user.name.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </>
+                ) : (
+                  <CgProfile className="w-full h-full text-[#F4B740]" />
+                )}
+              </Avatar>
+            </motion.div>
 
             <div className="w-full space-y-1">
-              <EditProfile initialData={user}>
-                <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all px-2">
-                  <RiPencilLine size={22} />
-                  <span className="text-lg font-medium">Edit Profil</span>
-                </div>
-              </EditProfile>
-              
-              <ChangePassword email={user.email}>
-                <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all px-2">
-                  <RiLockPasswordLine size={22} />
-                  <span className="text-lg font-medium">Ganti Kata Sandi</span>
-                </div>
-              </ChangePassword>
-              
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all text-red-700 md:text-[#4B2E05] px-2">
-                    <RiLogoutBoxRLine size={22} />
-                    <span className="text-lg font-medium">Keluar</span>
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
+                <EditProfile initialData={user}>
+                  <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all px-2">
+                    <RiPencilLine size={22} />
+                    <span className="text-lg font-medium">Edit Profil</span>
                   </div>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="w-[90%] sm:w-full max-w-[450px] bg-[#FFF8E1] border-none rounded-[15px]">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle className="text-[#4B2E05] font-bold text-2xl text-left">Apakah Anda yakin ingin keluar?</AlertDialogTitle>
-                    <AlertDialogDescription className="text-[#4B2E05]/80 text-left">
-                      Tindakan ini akan mengakhiri sesi Anda dan Anda harus login ulang untuk mengakses sistem.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="rounded-[15px] border-[#4B2E05] text-[#4B2E05]">Batal</AlertDialogCancel>
-                    <AlertDialogAction 
-                      onClick={handleLogout}
-                      className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px]"
-                    >
-                      Keluar
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                </EditProfile>
+              </motion.div>
+              
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }}>
+                <ChangePassword email={user.email}>
+                  <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all px-2">
+                    <RiLockPasswordLine size={22} />
+                    <span className="text-lg font-medium">Ganti Kata Sandi</span>
+                  </div>
+                </ChangePassword>
+              </motion.div>
+              
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }}>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <div className="flex items-center gap-4 py-3 border-b-2 border-[#4B2E05] cursor-pointer hover:opacity-70 transition-all text-red-700 md:text-[#4B2E05] px-2">
+                      <RiLogoutBoxRLine size={22} />
+                      <span className="text-lg font-medium">Keluar</span>
+                    </div>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="w-[90%] sm:w-full max-w-[450px] bg-[#FFF8E1] border-none rounded-[15px]">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-[#4B2E05] font-bold text-2xl text-left">Apakah Anda yakin ingin keluar?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-[#4B2E05]/80 text-left">
+                        Tindakan ini akan mengakhiri sesi Anda dan Anda harus login ulang untuk mengakses sistem.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="rounded-[15px] border-[#4B2E05] text-[#4B2E05]">Batal</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={handleLogout}
+                        className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px]"
+                      >
+                        Keluar
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </motion.div>
 
               {user.lastLogin && (
-                <div className="flex items-center gap-2 pt-4 opacity-60 px-2">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.6 }} transition={{ delay: 0.8 }} className="flex items-center gap-2 pt-4 opacity-60 px-2">
                   <RiTimeLine size={16} />
                   <span className="text-[10px] md:text-xs">Terakhir masuk: <br/> {user.lastLogin}</span>
-                </div>
+                </motion.div>
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="hidden md:block w-[4px] h-[450px] bg-[#4B2E05] rounded-[15px] self-center opacity-80" />
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 0.8 }} 
+          transition={{ duration: 1, delay: 0.3 }}
+          className="hidden md:block w-[4px] h-[450px] bg-[#4B2E05] rounded-[15px] self-center opacity-80" 
+        />
 
-        <div className="w-full md:w-2/3 bg-[#F4B740] rounded-[15px] p-6 md:p-8 shadow-2xl">
-          <h2 className="text-3xl font-bold text-[#4B2E05] mb-4">Profil</h2>
+        <motion.div 
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-full md:w-2/3 bg-[#F4B740] rounded-[15px] p-6 md:p-8 shadow-2xl"
+        >
+          <motion.h2 initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-3xl font-bold text-[#4B2E05] mb-4">Profil</motion.h2>
           
           <div className="grid grid-cols-1 gap-3">
-            <div className="space-y-1 text-left">
+            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="space-y-1 text-left">
               <Label className="text-base font-bold text-[#4B2E05] ml-1">Nama Lengkap</Label>
               <Input 
                 readOnly 
                 value={user.name}
                 className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md text-[#4B2E05] text-base px-5 focus-visible:ring-0 cursor-default"
               />
-            </div>
+            </motion.div>
 
-            <div className="space-y-1 text-left">
+            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="space-y-1 text-left">
               <Label className="text-base font-bold text-[#4B2E05] ml-1">Email</Label>
               <Input 
                 readOnly 
                 value={user.email}
                 className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md text-[#4B2E05] text-base px-5 focus-visible:ring-0 cursor-default"
               />
-            </div>
+            </motion.div>
 
-            <div className="space-y-1 text-left">
+            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }} className="space-y-1 text-left">
               <Label className="text-base font-bold text-[#4B2E05] ml-1">No Telepon</Label>
               <Input 
                 readOnly 
                 value={user.phone || "-"}
                 className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md text-[#4B2E05] text-base px-5 focus-visible:ring-0 cursor-default"
               />
-            </div>
+            </motion.div>
 
-            <div className="space-y-1 text-left">
+            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.8 }} className="space-y-1 text-left">
               <Label className="text-base font-bold text-[#4B2E05] ml-1">Alamat</Label>
               <Input 
                 readOnly 
                 value={user.address || "-"}
                 className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md text-[#4B2E05] text-base px-5 focus-visible:ring-0 cursor-default"
               />
-            </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }

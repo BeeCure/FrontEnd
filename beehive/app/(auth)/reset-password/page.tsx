@@ -9,6 +9,7 @@ import { CiRead, CiUnread } from "react-icons/ci";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { showToast } from "@/components/Toast";
+import { motion } from "motion/react";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -69,8 +70,18 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
-      <div className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
+    <motion.div 
+      initial={{ y: 40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5"
+    >
+      <motion.div 
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12"
+      >
           <Image 
             src="/Image/logo-secondary-choco.png" 
             alt="Bee HIVE Logo" 
@@ -79,17 +90,32 @@ function ResetPasswordForm() {
             className="w-full max-w-[320px] object-contain"
             priority
           />
-        </div>
+        </motion.div>
 
       <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
-        <h2 className="text-3xl font-bold mb-12 tracking-widest uppercase text-center leading-tight">
+      <motion.div 
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]"
+      >
+        <motion.h2 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-3xl font-bold mb-12 tracking-widest uppercase text-center leading-tight"
+        >
           Ganti Kata <br /> Sandi
-        </h2>
+        </motion.h2>
 
         <form onSubmit={handleResetPassword} className="w-full max-w-[340px] space-y-8">
-          <div className="space-y-2">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="space-y-2"
+          >
             <Label className="text-xl font-bold ml-1">Kata Sandi Baru</Label>
             <div className="relative">
               <Input
@@ -110,9 +136,14 @@ function ResetPasswordForm() {
             {showPassError && (
               <p className="text-[10px] text-red-600 font-bold ml-2 leading-tight">Minimal 8 karakter, gunakan huruf besar, kecil, dan angka</p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="space-y-2">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="space-y-2"
+          >
             <Label className="text-xl font-bold ml-1">Konfirmasi Kata Sandi Baru</Label>
             <div className="relative">
               <Input
@@ -132,9 +163,14 @@ function ResetPasswordForm() {
             {showError && (
               <p className="text-xs text-red-600 font-bold ml-2">Kata sandi tidak cocok</p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="flex justify-center pt-6">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="flex justify-center pt-6"
+          >
             <Button
               type="submit"
               disabled={!isFormValid || isLoading}
@@ -142,10 +178,10 @@ function ResetPasswordForm() {
             >
               {isLoading ? <Loader2 className="animate-spin" /> : "Selesai"}
             </Button>
-          </div>
+          </motion.div>
         </form>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

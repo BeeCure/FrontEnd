@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { showToast } from "@/components/Toast";
 import HistorySection from "@/components/Classification/history";
+import { motion } from "motion/react";
 
 interface ClassificationResult {
   species: string;
@@ -42,9 +43,11 @@ export default function KlasifikasiPage() {
       
       setIsVerifying(false);
       fetchHistory();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       router.push("/login");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const fetchHistory = useCallback(async () => {
@@ -99,6 +102,7 @@ export default function KlasifikasiPage() {
       } else {
         showToast.error(resJson.message || "Gagal memproses gambar");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       showToast.error("Terjadi kesalahan koneksi ke server.");
     } finally {
@@ -124,10 +128,18 @@ export default function KlasifikasiPage() {
 
   return (
     <main className="min-h-screen w-full bg-[#FFF8E1] px-4 md:px-16 py-10 font-inder text-[#4B2E05]">
-      <div className="max-w-7xl mx-auto">
+      <motion.div 
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto"
+      >
         <section className="flex flex-col items-center text-center space-y-8">
           <div className="w-full max-w-2xl">
-            <div
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               onClick={() => fileInputRef.current?.click()}
               className={cn(
                 "relative w-full aspect-video md:h-[350px] bg-[#F4B740]/10 rounded-[15px] border-4 border-dashed border-[#F4B740] flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-[#F4B740]/20 group overflow-hidden",
@@ -145,10 +157,15 @@ export default function KlasifikasiPage() {
                 </div>
               )}
               <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-            </div>
+            </motion.div>
 
             {result && (
-              <div className="mt-8 p-6 bg-[#F4B740] rounded-[15px] text-left shadow-xl animate-in fade-in slide-in-from-top-4 duration-500">
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className="mt-8 p-6 bg-[#F4B740] rounded-[15px] text-left shadow-xl"
+              >
                 <div className="flex items-center gap-2 mb-4 border-b border-[#4B2E05]/20 pb-2">
                   <RiCheckboxCircleLine size={24} className="text-[#34581B]" />
                   <h2 className="text-xl font-bold uppercase">Hasil Analisis</h2>
@@ -159,10 +176,15 @@ export default function KlasifikasiPage() {
                   <ResultItem label="Akurasi" value={`${(result.confidence * 100).toFixed(2)}%`} />
                   <ResultItem label="Kemiripan" value={`${(result.similarity * 100).toFixed(2)}%`} />
                 </div>
-              </div>
+              </motion.div>
             )}
 
-            <div className="mt-6 mb-10 flex justify-center gap-4">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-6 mb-10 flex justify-center gap-4"
+            >
               {previewUrl && (
                 <Button onClick={handleReset} className="rounded-[15px] border-2 border-[#8E4117] bg-transparent text-[#8E4117] font-bold px-8 h-12 text-lg hover:bg-[#8E4117] hover:text-[#FFF8E1] transition-all">
                   <RiDeleteBin6Line className="mr-2" size={20} /> Hapus
@@ -175,12 +197,18 @@ export default function KlasifikasiPage() {
               >
                 {isProcessing ? <><RiLoader4Line className="animate-spin mr-2" size={24} /> Memproses...</> : "Mulai Klasifikasi"}
               </Button>
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        <HistorySection historyData={historyData} isLoading={isHistoryLoading} />
-      </div>
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <HistorySection historyData={historyData} isLoading={isHistoryLoading} />
+        </motion.div>
+      </motion.div>
     </main>
   );
 }

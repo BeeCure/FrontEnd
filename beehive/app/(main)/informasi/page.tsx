@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { motion } from "motion/react";
 
 interface BeeImages {
   bodyShape?: string;
@@ -89,7 +90,12 @@ export default function InformasiPage() {
 
   return (
     <main className="h-100vh w-full bg-[#FFF8E1] px-4 md:mt-1 mt-0 md:px-16 flex flex-col justify-between py-6 overflow-hidden font-inder text-[#4B2E05]">
-      <div className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-0 gap-4">
+      <motion.div 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-0 gap-4"
+      >
         <div className="flex w-full md:w-auto justify-between gap-2">
           {filterButtons.map((btn) => (
             <Button 
@@ -119,7 +125,7 @@ export default function InformasiPage() {
           </div>
           <AddDataBee onSuccess={fetchBees} />
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex-1 w-full max-w-7xl mx-auto px-2 md:px-10 overflow-y-auto scrollbar-hide py-4">
         {isLoading ? (
@@ -136,8 +142,11 @@ export default function InformasiPage() {
                 </defs>
             </svg>
             {currentItems.length > 0 ? currentItems.map((bee, idx) => (
-              <div 
+              <motion.div 
                 key={bee.id} 
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
                 onClick={() => { setSelectedBee(bee); setIsDetailOpen(true); }}
                 className="group relative flex flex-col items-center w-full max-w-[200px] md:max-w-[240px] cursor-pointer"
               >
@@ -152,7 +161,7 @@ export default function InformasiPage() {
                   <h3 className="text-[#FFF8E1] text-sm md:text-xl font-bold leading-tight drop-shadow-sm group-hover:text-[#F4B740] truncate px-1">{bee.name}</h3>
                   <p className="text-[#FFF8E1] text-[10px] md:text-base italic opacity-90 leading-tight group-hover:text-[#FFF8E1] truncate px-1">{bee.scientificName}</p>
                 </div>
-              </div>
+              </motion.div>
             )) : <p className="opacity-30 py-10 w-full text-center md:text-left">Data lebah tidak ditemukan.</p>}
           </div>
         )}
@@ -160,7 +169,12 @@ export default function InformasiPage() {
 
       <EditDeleteBeeDialog bee={selectedBee} isOpen={isDetailOpen} onOpenChange={setIsDetailOpen} onSuccess={fetchBees} />
 
-      <div className="mt-0">
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="mt-0"
+      >
         {totalPages > 1 && (
           <Pagination>
             <PaginationContent>
@@ -174,7 +188,7 @@ export default function InformasiPage() {
             </PaginationContent>
           </Pagination>
         )}
-      </div>
+      </motion.div>
     </main>
   );
 }

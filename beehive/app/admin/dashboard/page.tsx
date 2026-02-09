@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { RiFacebookCircleLine, RiMailLine, RiPhoneLine, RiUser3Line } from "react-icons/ri";
 import { PieChart, Pie, Cell, ResponsiveContainer, PieLabelRenderProps } from "recharts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { motion } from "motion/react";
 
 import PermintaanAkun from "@/components/Admin/permintaanAkun";
 import AkunAktif from "@/components/Admin/akunAktif";
@@ -52,7 +53,7 @@ export default function AdminDashboardPage() {
       const result = await res.json();
 
       if (!result.success || result.data.role !== "SUPER_ADMIN") {
-        router.push("/403");
+        router.push("/forbidden");
         return;
       }
       
@@ -62,6 +63,7 @@ export default function AdminDashboardPage() {
       console.error("Auth error:", error);
       router.push("/forbidden");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const fetchData = useCallback(async () => {
@@ -129,23 +131,47 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <main className="min-h-full lg:h-full w-full bg-[#FFF8E1] p-4 md:px-12 md:py-8 mt-4 md:mt-2 font-inder text-[#4B2E05] flex flex-col">
-      <div className="max-w-7xl mx-auto w-full h-full flex flex-col space-y-6 lg:space-y-10 min-h-0">
-        
+    <main className="min-h-full lg:h-full w-full bg-[#FFF8E1] p-4 md:px-12 md:py-8 mt-4 md:mt-2 font-inder text-[#4B2E05] flex flex-col overflow-hidden">
+      <motion.div 
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto w-full h-full flex flex-col space-y-6 lg:space-y-10 min-h-0"
+      >
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 items-center shrink-0">
-          <div className="bg-[#F4B740] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm">
+          <motion.div 
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="bg-[#F4B740] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm"
+          >
             <h2 className="text-3xl md:text-5xl font-bold leading-none">{pendingRequests.length}</h2>
             <p className="text-xs md:text-lg font-bold mt-1 opacity-80 uppercase tracking-wider">Permintaan</p>
-          </div>
-          <div className="bg-[#4B2E05] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm text-[#FFF8E1]">
+          </motion.div>
+          <motion.div 
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="bg-[#4B2E05] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm text-[#FFF8E1]"
+          >
             <h2 className="text-3xl md:text-5xl font-bold leading-none">{activeList.length}</h2>
             <p className="text-xs md:text-lg font-bold mt-1 opacity-80 uppercase tracking-wider">Aktif</p>
-          </div>
-          <div className="bg-[#8E4117] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm text-[#FFF8E1]">
+          </motion.div>
+          <motion.div 
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="bg-[#8E4117] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm text-[#FFF8E1]"
+          >
             <h2 className="text-3xl md:text-5xl font-bold leading-none">{inactiveList.length}</h2>
             <p className="text-xs md:text-lg font-bold mt-1 opacity-80 uppercase tracking-wider">Tidak Aktif</p>
-          </div>
-          <div className="relative w-28 h-28 md:w-40 md:h-40 mx-auto shrink-0">
+          </motion.div>
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="relative w-28 h-28 md:w-40 md:h-40 mx-auto shrink-0"
+          >
             {mounted && (
               <div className="absolute inset-0">
                 <ResponsiveContainer width="100%" height="100%">
@@ -157,15 +183,36 @@ export default function AdminDashboardPage() {
               <span className="text-[8px] opacity-60 font-bold uppercase tracking-widest">Total</span>
               <span className="text-lg font-bold">{total}</span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 flex-1 min-h-0 items-start pb-4">
-          <PermintaanAkun list={pendingRequests} onCardClick={handleCardClick} refreshData={fetchData} />
-          <AkunAktif list={activeList} onCardClick={handleCardClick} refreshData={fetchData} />
-          <AkunTidakAktif list={inactiveList} onCardClick={handleCardClick} refreshData={fetchData} />
+          <motion.div 
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="h-full min-h-0"
+          >
+            <PermintaanAkun list={pendingRequests} onCardClick={handleCardClick} refreshData={fetchData} />
+          </motion.div>
+          <motion.div 
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="h-full min-h-0"
+          >
+            <AkunAktif list={activeList} onCardClick={handleCardClick} refreshData={fetchData} />
+          </motion.div>
+          <motion.div 
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="h-full min-h-0"
+          >
+            <AkunTidakAktif list={inactiveList} onCardClick={handleCardClick} refreshData={fetchData} />
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="bg-[#F4B740] border-none rounded-[15px] w-[92%] sm:w-full max-w-[450px] p-8 shadow-2xl font-inder text-[#4B2E05]">
