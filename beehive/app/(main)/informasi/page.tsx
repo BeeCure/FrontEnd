@@ -47,8 +47,27 @@ export default function InformasiPage() {
   const [selectedBee, setSelectedBee] = useState<Bee | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const itemsPerPage = 8;
+
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const result = await res.json();
+      if (result.success) {
+        setUserRole(result.data.role);
+      } else {
+        setUserRole(null);
+      }
+    } catch (error) {
+      setUserRole(null);
+      console.error("Gagal mengambil profil:", error);
+    }
+  };
 
   const fetchBees = async () => {
     setIsLoading(true);
@@ -67,6 +86,10 @@ export default function InformasiPage() {
   };
 
   useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  useEffect(() => {
     const debounceTimer = setTimeout(fetchBees, 500);
     return () => clearTimeout(debounceTimer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,10 +106,13 @@ export default function InformasiPage() {
     return matchesFilter && matchesSearch;
   });
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const currentItems = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const finalFilteredData = userRole ? filteredData : filteredData.slice(0, 4);
+
+  const totalPages = Math.ceil(finalFilteredData.length / itemsPerPage);
+  const currentItems = finalFilteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const filterButtons: FilterType[] = ["Semua", "Trigona", "Apis"];
+  const canAdd = userRole === "PRACTITIONER" || userRole === "SUPER_ADMIN";
 
   return (
     <main className="h-100vh w-full bg-[#FFF8E1] px-4 md:mt-1 mt-0 md:px-16 flex flex-col justify-between py-6 overflow-hidden font-inder text-[#4B2E05]">
@@ -123,7 +149,7 @@ export default function InformasiPage() {
               className="h-10 w-full rounded-[15px] border-none bg-[#F4B740]/20 pl-10 focus-visible:ring-1 focus-visible:ring-[#4B2E05] shadow-inner text-[#4B2E05]"
             />
           </div>
-          <AddDataBee onSuccess={fetchBees} />
+          {canAdd && <AddDataBee onSuccess={fetchBees} />}
         </div>
       </motion.div>
 
@@ -133,41 +159,60 @@ export default function InformasiPage() {
             <Loader2 className="animate-spin opacity-20" size={48} />
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12 justify-items-start">
-            <svg width="0" height="0" className="absolute">
-                <defs>
-                    <clipPath id="smoothHexagon" clipPathUnits="objectBoundingBox">
-                        <path d="M0.5,0.015 C0.543,0.015 0.88,0.208 0.92,0.23 C0.963,0.255 0.985,0.285 0.985,0.335 L0.985,0.665 C0.985,0.715 0.963,0.745 0.92,0.77 C0.88,0.792 0.543,0.985 0.5,0.985 C0.457,0.985 0.12,0.792 0.08,0.77 C0.037,0.745 0.015,0.715 0.015,0.665 L0.015,0.335 C0.015,0.285 0.037,0.255 0.08,0.23 C0.12,0.208 0.457,0.015 0.5,0.015 Z" />
-                    </clipPath>
-                </defs>
-            </svg>
-            {currentItems.length > 0 ? currentItems.map((bee, idx) => (
-              <motion.div 
-                key={bee.id} 
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                onClick={() => { setSelectedBee(bee); setIsDetailOpen(true); }}
-                className="group relative flex flex-col items-center w-full max-w-[200px] md:max-w-[240px] cursor-pointer"
-              >
-                <div
-                  className="relative w-full aspect-[4/4.2] transition-all duration-500 group-hover:scale-[1.02]"
-                  style={{ clipPath: "url(#smoothHexagon)", WebkitClipPath: "url(#smoothHexagon)" }}
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12 justify-items-start">
+              <svg width="0" height="0" className="absolute">
+                  <defs>
+                      <clipPath id="smoothHexagon" clipPathUnits="objectBoundingBox">
+                          <path d="M0.5,0.015 C0.543,0.015 0.88,0.208 0.92,0.23 C0.963,0.255 0.985,0.285 0.985,0.335 L0.985,0.665 C0.985,0.715 0.963,0.745 0.92,0.77 C0.88,0.792 0.543,0.985 0.5,0.985 C0.457,0.985 0.12,0.792 0.08,0.77 C0.037,0.745 0.015,0.715 0.015,0.665 L0.015,0.335 C0.015,0.285 0.037,0.255 0.08,0.23 C0.12,0.208 0.457,0.015 0.5,0.015 Z" />
+                      </clipPath>
+                  </defs>
+              </svg>
+              {currentItems.length > 0 ? currentItems.map((bee, idx) => (
+                <motion.div 
+                  key={bee.id} 
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  onClick={() => { setSelectedBee(bee); setIsDetailOpen(true); }}
+                  className="group relative flex flex-col items-center w-full max-w-[200px] md:max-w-[240px] cursor-pointer"
                 >
-                  <Image src={bee.images?.bodyShape || "/Image/Lebah1.png"} alt={bee.name} fill unoptimized priority={idx < 4} className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
-                </div>
-                <div className="w-[85%] bg-[#F4B740] rounded-[22px] py-3 px-2 text-center -mt-14 md:-mt-17 relative z-10 shadow-lg border border-white/20 transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-[#4B2E05]">
-                  <h3 className="text-[#FFF8E1] text-sm md:text-xl font-bold leading-tight drop-shadow-sm group-hover:text-[#F4B740] truncate px-1">{bee.name}</h3>
-                  <p className="text-[#FFF8E1] text-[10px] md:text-base italic opacity-90 leading-tight group-hover:text-[#FFF8E1] truncate px-1">{bee.scientificName}</p>
-                </div>
-              </motion.div>
-            )) : <p className="opacity-30 py-10 w-full text-center md:text-left">Data lebah tidak ditemukan.</p>}
-          </div>
+                  <div
+                    className="relative w-full aspect-[4/4.2] transition-all duration-500 group-hover:scale-[1.02]"
+                    style={{ clipPath: "url(#smoothHexagon)", WebkitClipPath: "url(#smoothHexagon)" }}
+                  >
+                    <Image src={bee.images?.bodyShape || "/Image/Lebah1.png"} alt={bee.name} fill unoptimized priority={idx < 4} className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
+                  </div>
+                  <div className="w-[85%] bg-[#F4B740] rounded-[22px] py-3 px-2 text-center -mt-14 md:-mt-17 relative z-10 shadow-lg border border-white/20 transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-[#4B2E05]">
+                    <h3 className="text-[#FFF8E1] text-sm md:text-xl font-bold leading-tight drop-shadow-sm group-hover:text-[#F4B740] truncate px-1">{bee.name}</h3>
+                    <p className="text-[#FFF8E1] text-[10px] md:text-base italic opacity-90 leading-tight group-hover:text-[#FFF8E1] truncate px-1">{bee.scientificName}</p>
+                  </div>
+                </motion.div>
+              )) : <p className="opacity-30 py-10 w-full text-center md:text-left">Data lebah tidak ditemukan.</p>}
+            </div>
+
+            {/* Pesan untuk pengguna yang belum login */}
+            {!userRole && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="w-full text-center mt-12 mb-6 mt-6 text-[#4B2E05]/60 italic text-sm md:text-base"
+              >
+                silahkan login atau registrasi untuk dapat melihat informasi jenis lebah secara lengkap.
+              </motion.p>
+            )}
+          </>
         )}
       </div>
 
-      <EditDeleteBeeDialog bee={selectedBee} isOpen={isDetailOpen} onOpenChange={setIsDetailOpen} onSuccess={fetchBees} />
+      <EditDeleteBeeDialog 
+        bee={selectedBee} 
+        isOpen={isDetailOpen} 
+        onOpenChange={setIsDetailOpen} 
+        onSuccess={fetchBees} 
+        userRole={userRole}
+      />
 
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
@@ -175,7 +220,8 @@ export default function InformasiPage() {
         transition={{ duration: 0.5 }}
         className="mt-0"
       >
-        {totalPages > 1 && (
+        {/* Pagination hanya muncul jika login dan halaman > 1 */}
+        {userRole && totalPages > 1 && (
           <Pagination>
             <PaginationContent>
               <PaginationItem><PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); if(currentPage > 1) setCurrentPage(currentPage - 1) }} className={cn("text-[#4B2E05] font-bold", currentPage === 1 ? "opacity-30 pointer-events-none" : "hover:bg-[#F4B740]/20")} /></PaginationItem>

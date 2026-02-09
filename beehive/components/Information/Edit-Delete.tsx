@@ -26,9 +26,10 @@ interface EditDeleteProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
+  userRole: string | null;
 }
 
-export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSuccess }: EditDeleteProps) {
+export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSuccess, userRole }: EditDeleteProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -48,6 +49,10 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
   const [files, setFiles] = useState<(File | null)[]>([null, null, null, null]);
 
   const imageKeys = ["bodyShape", "wingShape", "entranceShape", "honeyPouchShape"];
+
+  // Logic Role
+  const isSuperAdmin = userRole === "SUPER_ADMIN";
+  const canEdit = userRole === "PRACTITIONER" || userRole === "SUPER_ADMIN";
 
   useEffect(() => {
     if (bee) {
@@ -129,7 +134,6 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
     const toastId = showToast.loading("Sedang menghapus data lebah...");
 
     try {
-      // Membersihkan URL dari trailing slash untuk menghindari double slash //
       const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
       
       const res = await fetch(`${baseUrl}/api/bee/species/${bee.id}`, {
@@ -204,22 +208,28 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
                   <DetailRow label="Tahun" value={bee?.discoveredYear?.toString()} />
                 </div>
                 <div className="flex justify-end gap-3 mt-8">
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] px-8 h-9 font-bold border-none shadow-md transition-transform active:scale-95">Hapus</Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-[#FFF8E1] border-none rounded-[15px] font-inder text-[#4B2E05]">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle className="text-xl font-bold">Hapus Data Lebah?</AlertDialogTitle>
-                        <AlertDialogDescription className="text-[#4B2E05]/80 text-sm">Tindakan ini permanen dan data lebah tidak bisa dikembalikan.</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter className="mt-4">
-                        <AlertDialogCancel className="rounded-[15px] border-2 border-[#4B2E05] font-bold">Batal</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDelete} className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] font-bold px-6">Ya, Hapus</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  <Button onClick={() => setIsEditing(true)} className="bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] px-8 h-9 font-bold border-none shadow-md transition-all active:scale-95">Edit</Button>
+                  {/* Tombol Hapus: Hanya SUPER_ADMIN */}
+                  {isSuperAdmin && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] px-8 h-9 font-bold border-none shadow-md transition-transform active:scale-95">Hapus</Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="bg-[#FFF8E1] border-none rounded-[15px] font-inder text-[#4B2E05]">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle className="text-xl font-bold">Hapus Data Lebah?</AlertDialogTitle>
+                          <AlertDialogDescription className="text-[#4B2E05]/80 text-sm">Tindakan ini permanen dan data lebah tidak bisa dikembalikan.</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="mt-4">
+                          <AlertDialogCancel className="rounded-[15px] border-2 border-[#4B2E05] font-bold">Batal</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleDelete} className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] font-bold px-6">Ya, Hapus</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                  {/* Tombol Edit: PRACTITIONER & SUPER_ADMIN */}
+                  {canEdit && (
+                    <Button onClick={() => setIsEditing(true)} className="bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] px-8 h-9 font-bold border-none shadow-md transition-all active:scale-95">Edit</Button>
+                  )}
                 </div>
               </>
             ) : (
