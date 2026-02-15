@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RiPencilLine, RiLockPasswordLine, RiLogoutBoxRLine, RiTimeLine } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
-import EditProfile from "@/components/EditProfile";
-import ChangePassword from "@/components/ChangePassword";
+import EditProfile from "@/components/Profil/EditProfile";
+import ChangePassword from "@/components/Profil/ChangePassword";
 import { showToast } from "@/components/Toast";
 import {
   AlertDialog,
@@ -146,7 +146,7 @@ export default function ProfilePage() {
                       <span className="text-lg font-medium">Keluar</span>
                     </div>
                   </AlertDialogTrigger>
-                  <AlertDialogContent className="w-[90%] sm:w-full max-w-[450px] bg-[#FFF8E1] border-none rounded-[15px]">
+                  <AlertDialogContent className="w-[90%] sm:w-full max-w-[450px] bg-[#F4B740] border-none rounded-[15px]">
                     <AlertDialogHeader>
                       <AlertDialogTitle className="text-[#4B2E05] font-bold text-2xl text-left">Apakah Anda yakin ingin keluar?</AlertDialogTitle>
                       <AlertDialogDescription className="text-[#4B2E05]/80 text-left">

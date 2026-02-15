@@ -101,7 +101,7 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
           <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start text-[#4B2E05]">
             <div className="flex-1 w-full space-y-4">
               <AddField label="Nama Lebah" id="name" value={formData.name} onChange={handleInputChange} />
-              <AddField label="Nama Latin" id="scientificName" value={formData.scientificName} onChange={handleInputChange} />
+              <AddField label="Spesies" id="scientificName" value={formData.scientificName} onChange={handleInputChange} />
               <AddField label="Genus" id="genus" value={formData.genus} onChange={handleInputChange} />
               <AddField label="Sub Genus" id="subGenus" value={formData.subGenus} onChange={handleInputChange} />
               <AddField label="Penemu" id="discoverer" value={formData.discoverer} onChange={handleInputChange} />

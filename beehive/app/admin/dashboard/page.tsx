@@ -53,7 +53,7 @@ export default function AdminDashboardPage() {
       const result = await res.json();
 
       if (!result.success || result.data.role !== "SUPER_ADMIN") {
-        router.push("/forbidden");
+        router.push("/404");
         return;
       }
       
@@ -143,7 +143,7 @@ export default function AdminDashboardPage() {
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-[#F4B740] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm"
+            className="bg-[#F4B740] rounded-[15px] p-4 md:p-6 flex flex-col justify-center h-28 md:h-36 shadow-sm text-[#FFF8E1]  "
           >
             <h2 className="text-3xl md:text-5xl font-bold leading-none">{pendingRequests.length}</h2>
             <p className="text-xs md:text-lg font-bold mt-1 opacity-80 uppercase tracking-wider">Permintaan</p>

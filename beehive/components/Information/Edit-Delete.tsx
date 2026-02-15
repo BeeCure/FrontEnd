@@ -200,7 +200,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
               <>
                 <div className="space-y-3.5 text-[15px] lg:text-base">
                   <DetailRow label="Nama" value={bee?.name} />
-                  <DetailRow label="Nama Latin" value={bee?.scientificName} isItalic />
+                  <DetailRow label="Spesies" value={bee?.scientificName} isItalic />
                   <DetailRow label="Sub-Genus" value={bee?.subGenus} />
                   <DetailRow label="Genus" value={bee?.genus} />
                   <DetailRow label="Persebaran" value={bee?.distribution} />
@@ -214,7 +214,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
                       <AlertDialogTrigger asChild>
                         <Button className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] px-8 h-9 font-bold border-none shadow-md transition-transform active:scale-95">Hapus</Button>
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-[#FFF8E1] border-none rounded-[15px] font-inder text-[#4B2E05]">
+                      <AlertDialogContent className="bg-[#F4B740] border-none rounded-[15px] font-inder text-[#4B2E05]">
                         <AlertDialogHeader>
                           <AlertDialogTitle className="text-xl font-bold">Hapus Data Lebah?</AlertDialogTitle>
                           <AlertDialogDescription className="text-[#4B2E05]/80 text-sm">Tindakan ini permanen dan data lebah tidak bisa dikembalikan.</AlertDialogDescription>
@@ -235,7 +235,7 @@ export default function EditDeleteBeeDialog({ bee, isOpen, onOpenChange, onSucce
             ) : (
               <form onSubmit={handleUpdate} className="space-y-2.5">
                 <EditField label="Nama" id="name" value={formData.name} onChange={handleInputChange} />
-                <EditField label="Nama Latin" id="scientificName" value={formData.scientificName} onChange={handleInputChange} />
+                <EditField label="Spesies" id="scientificName" value={formData.scientificName} onChange={handleInputChange} />
                 <EditField label="Sub-Genus" id="subGenus" value={formData.subGenus} onChange={handleInputChange} />
                 <EditField label="Genus" id="genus" value={formData.genus} onChange={handleInputChange} />
                 <EditField label="Persebaran" id="distribution" value={formData.distribution} onChange={handleInputChange} />

@@ -143,7 +143,7 @@ export default function InformasiPage() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 opacity-40 text-[#4B2E05]" size={18} />
             <Input 
-              placeholder="Cari lebah berdasarkan nama, nama latin, atau genus..." 
+              placeholder="Cari lebah berdasarkan nama, spesies, atau genus..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-10 w-full rounded-[15px] border-none bg-[#F4B740]/20 pl-10 focus-visible:ring-1 focus-visible:ring-[#4B2E05] shadow-inner text-[#4B2E05]"
