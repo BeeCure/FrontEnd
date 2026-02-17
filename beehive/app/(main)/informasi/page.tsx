@@ -18,6 +18,19 @@ import {
 } from "@/components/ui/pagination";
 import { motion } from "motion/react";
 
+const anim = {
+  base: (delay = 0, y = 20, duration = 0.5) => ({
+    initial: { y, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    transition: { duration, delay }
+  }),
+  fade: (delay = 0) => ({
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5, delay }
+  })
+};
+
 interface BeeImages {
   bodyShape?: string;
   wingShape?: string;
@@ -116,12 +129,7 @@ export default function InformasiPage() {
 
   return (
     <main className="h-100vh w-full bg-[#FFF8E1] px-4 md:mt-1 mt-0 md:px-16 flex flex-col justify-between py-6 overflow-hidden font-inder text-[#4B2E05]">
-      <motion.div 
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-0 gap-4"
-      >
+      <motion.div {...anim.base(0, -20)} className="max-w-7xl mx-auto w-full px-2 md:px-10 flex flex-col md:flex-row justify-between items-center mt-4 mb-0 gap-4">
         <div className="flex w-full md:w-auto justify-between gap-2">
           {filterButtons.map((btn) => (
             <Button 
@@ -171,9 +179,7 @@ export default function InformasiPage() {
               {currentItems.length > 0 ? currentItems.map((bee, idx) => (
                 <motion.div 
                   key={bee.id} 
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  {...anim.base(idx * 0.05, 30, 0.4)}
                   onClick={() => { setSelectedBee(bee); setIsDetailOpen(true); }}
                   className="group relative flex flex-col items-center w-full max-w-[200px] md:max-w-[240px] cursor-pointer"
                 >
@@ -192,13 +198,8 @@ export default function InformasiPage() {
               )) : <p className="opacity-30 py-10 w-full text-center md:text-left">Data lebah tidak ditemukan.</p>}
             </div>
 
-            {/* Pesan untuk pengguna yang belum login */}
             {!userRole && (
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="w-full text-center mt-12 mb-6 mt-6 text-[#4B2E05]/60 italic text-sm md:text-base"
-              >
+              <motion.p {...anim.fade(0.2)} className="w-full text-center mt-12 mb-6 text-[#4B2E05]/60 italic text-sm md:text-base">
                 silahkan login atau registrasi untuk dapat melihat informasi jenis lebah secara lengkap.
               </motion.p>
             )}
@@ -214,13 +215,8 @@ export default function InformasiPage() {
         userRole={userRole}
       />
 
-      <motion.div 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="mt-0"
-      >
-        {/* Pagination hanya muncul jika login dan halaman > 1 */}
+      {/* Pagination Section */}
+      <motion.div {...anim.base(0, 20)} className="mt-0">
         {userRole && totalPages > 1 && (
           <Pagination>
             <PaginationContent>
