@@ -64,15 +64,13 @@ export default function LoginPage() {
   return (
     <main className="flex items-center justify-center w-full h-full font-inder">
       <motion.div {...anim.base(0, 40)} className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
-        
-        {/* Sisi Kiri - Logo */}
+
         <motion.div {...anim.side(0.2, -50)} className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
           <Image src="/Image/logo-secondary-choco.png" alt="Bee HIVE Logo" width={400} height={400} className="w-full max-w-[320px] object-contain" priority />
         </motion.div>
 
         <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
 
-        {/* Sisi Kanan - Form */}
         <motion.div {...anim.side(0.2, 50)} className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
           <motion.div {...anim.base(0.4)} className="mb-10">
             <HiOutlineMail size={110} className="text-[#4B2E05]/90 drop-shadow-sm" />
