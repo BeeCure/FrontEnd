@@ -11,6 +11,19 @@ import Image from "next/image";
 import { showToast } from "@/components/Toast";
 import { motion } from "motion/react";
 
+const anim = {
+  base: (delay = 0, y = 20) => ({
+    initial: { y, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    transition: { duration: 0.5, delay }
+  }),
+  side: (delay = 0, x = 50) => ({
+    initial: { x, opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    transition: { duration: 0.5, delay }
+  })
+};
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,14 +50,10 @@ export default function LoginPage() {
 
       if (response.ok) {
         showToast.success(result.message || "Berhasil masuk!", toastId);
-        
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
+        setTimeout(() => { window.location.href = "/"; }, 1000);
       } else {
         showToast.error(result.message || "Email atau password salah.", toastId);
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       showToast.error("Gagal terhubung ke server.", toastId);
     } finally {
@@ -53,83 +62,45 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex items-center justify-center w-full h-full">
-      <motion.div 
-        initial={{ y: 40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5"
-      >
-        <motion.div 
-          initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12"
-        >
-          <Image 
-            src="/Image/logo-secondary-choco.png" 
-            alt="Bee HIVE Logo" 
-            width={400} 
-            height={400} 
-            className="w-full max-w-[320px] object-contain"
-            priority
-          />
+    <main className="flex items-center justify-center w-full h-full font-inder">
+      <motion.div {...anim.base(0, 40)} className="flex flex-col md:flex-row w-[90%] md:w-[85%] h-auto md:h-[80vh] max-w-[1100px] bg-[#F4B740] rounded-[15px] shadow-2xl overflow-hidden border border-black/5">
+        
+        {/* Sisi Kiri - Logo */}
+        <motion.div {...anim.side(0.2, -50)} className="hidden md:flex md:flex-1 flex-col items-center justify-center p-12">
+          <Image src="/Image/logo-secondary-choco.png" alt="Bee HIVE Logo" width={400} height={400} className="w-full max-w-[320px] object-contain" priority />
         </motion.div>
+
         <div className="hidden md:block w-[1px] bg-[#FFF8E1]/60 my-20" />
-        <motion.div 
-          initial={{ x: 50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]"
-        >
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mb-10"
-          >
+
+        {/* Sisi Kanan - Form */}
+        <motion.div {...anim.side(0.2, 50)} className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-[#4B2E05]">
+          <motion.div {...anim.base(0.4)} className="mb-10">
             <HiOutlineMail size={110} className="text-[#4B2E05]/90 drop-shadow-sm" />
           </motion.div>
+
           <form onSubmit={handleLogin} className="w-full max-w-[340px] space-y-6">
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="space-y-2"
-            >
+            <motion.div {...anim.base(0.5)} className="space-y-2">
               <Label htmlFor="email" className="text-xl font-bold ml-1">Email</Label>
               <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05]" />
             </motion.div>
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="space-y-2"
-            >
+
+            <motion.div {...anim.base(0.6)} className="space-y-2">
               <Label htmlFor="password" className="text-xl font-bold ml-1">Kata Sandi</Label>
               <div className="relative">
                 <Input id="password" type={showPassword ? "text" : "password"} value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} className="h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05] pr-12 text-lg" />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-2xl text-[#4B2E05]/60 hover:text-[#4B2E05] transition-colors">
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-2xl text-[#4B2E05]/60 hover:text-[#4B2E05]">
                   {showPassword ? <CiUnread /> : <CiRead />}
                 </button>
               </div>
             </motion.div>
-            <motion.div 
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              className="flex justify-between items-center px-1 text-[13px] font-medium text-[#4B2E05]"
-            >
+
+            <motion.div {...anim.base(0.7, 10)} className="flex justify-between items-center px-1 text-[13px] font-medium text-[#4B2E05]">
               <p>Belum Punya Akun? <Link href="/register" className="font-bold hover:underline">Daftar</Link></p>
               <Link href="/lupakatasandi" className="cursor-pointer hover:underline">Lupa Kata Sandi?</Link>
             </motion.div>
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              className="flex justify-center pt-8"
-            >
-              <Button type="submit" disabled={!isFormValid || isLoading} className="w-40 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+
+            <motion.div {...anim.base(0.8)} className="flex justify-center pt-8">
+              <Button type="submit" disabled={!isFormValid || isLoading} className="w-40 h-10 bg-[#3D2504] hover:bg-[#2a1a03] text-[#FFF8E1] rounded-[15px] text-lg font-bold shadow-lg active:scale-95 disabled:opacity-50">
                 {isLoading ? "Memproses..." : "Masuk"}
               </Button>
             </motion.div>
