@@ -8,7 +8,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 
 export default function Hero() {
   const [userRole, setUserRole] = useState<string | null>(null);
-  const banners = ["/Image/banner1.png", "/Image/banner2.png"];
+  const banners = ["/Image/banner1.jpeg", "/Image/banner2.jpeg", "/Image/banner3.jpeg"];
 
   useEffect(() => {
     const fetchProfile = async () => {

@@ -61,7 +61,7 @@ export default function AdminDashboardPage() {
       fetchData();
     } catch (error) {
       console.error("Auth error:", error);
-      router.push("/forbidden");
+      router.push("/404");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);

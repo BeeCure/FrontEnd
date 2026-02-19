@@ -12,14 +12,11 @@ export default function About() {
           BeeVra
         </h2>
         <p className="text-lg md:text-2xl text-center md:text-right leading-relaxed opacity-90">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-          Lorem Ipsum has been the industries standard dummy text ever since the 1500s, 
-          when an unknown printer took a galley of type and scrambled it to make a 
-          type specimen book. It has survived not only five centuries, but also the 
-          leap into electronic typesetting, remaining essentially unchanged. It was 
-          popularised in the 1960s with the release of Letraset sheets containing 
-          Lorem Ipsum passages, and more recently with desktop publishing software 
-          like Aldus PageMaker including versions of Lorem Ipsum.
+          BeeVra adalah sistem berbasis AI yang dikembangkan untuk membantu dalam mengenali dan memahami berbagai jenis lebah madu Indo-Malaya melalui citra gambar.
+          Selain melakukan klasifikasi secara otomatis, 
+          BeeVra juga menyediakan informasi terkait setiap jenis lebah madu, sehingga pengguna tidak hanya mengetahui hasil identifikasi,
+          tetapi juga memperoleh pengetahuan tambahan mengenai karakteristik datri lebah madu tersebut.
+          Dengan BeeVra, proses yang sebelumnya dilakukan secara manual menjadi lebih cepat, konsisten, dan terdokumentasi dengan baik pada sistem.
         </p>
       </div>
 

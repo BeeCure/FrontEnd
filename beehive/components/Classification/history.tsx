@@ -132,7 +132,6 @@ export default function HistorySection({ historyData, isLoading }: HistoryProps)
         <p className="text-center opacity-40 italic py-10">Belum ada riwayat klasifikasi.</p>
       )}
 
-      {/* DIALOG RIWAYAT */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="max-w-[95vw] md:max-w-5xl bg-[#F4B740] border-none rounded-[15px] p-6 md:p-10 shadow-2xl outline-none overflow-hidden font-inder">
           <DialogTitle className="sr-only">Detail Klasifikasi {selectedHistoryBee?.species}</DialogTitle>
@@ -173,7 +172,6 @@ export default function HistorySection({ historyData, isLoading }: HistoryProps)
         </DialogContent>
       </Dialog>
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="mt-4">
           <Pagination>
