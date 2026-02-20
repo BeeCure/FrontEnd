@@ -66,6 +66,17 @@ export default function Navbar() {
 
   const navItemStyle = "group bg-transparent text-[#4B2E05] text-lg font-medium px-4 py-2 flex items-center justify-center hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent data-[active]:bg-transparent border-none shadow-none ring-0 outline-none transition-none cursor-pointer";
 
+  const ListItem = React.forwardRef<HTMLAnchorElement, React.ComponentPropsWithoutRef<typeof Link> & { title: string }>(({ className, title, href, ...props }, ref) => (
+    <li className="group/item">
+      <NavigationMenuLink asChild>
+        <Link ref={ref} href={href} className={cn("block select-none rounded-[12px] p-3 text-[#4B2E05] transition-all", className)} {...props}>
+          <div className="text-sm font-bold leading-none inline-block relative">{title}<span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#4B2E05] transition-all duration-300 group-hover/item:w-full" /></div>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  ));
+  ListItem.displayName = "ListItem";
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center p-2">
       <div className="w-[95%] max-w-7xl h-16 md:h-18 bg-[#FFF8E1]/30 md:backdrop-blur-md rounded-[15px] px-4 md:px-8 flex items-center justify-between">
@@ -191,14 +202,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
-const ListItem = React.forwardRef<HTMLAnchorElement, React.ComponentPropsWithoutRef<typeof Link> & { title: string }>(({ className, title, href, ...props }, ref) => (
-  <li className="group/item">
-    <NavigationMenuLink asChild>
-      <Link ref={ref} href={href} className={cn("block select-none rounded-[12px] p-3 text-[#4B2E05] transition-all", className)} {...props}>
-        <div className="text-sm font-bold leading-none inline-block relative">{title}<span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#4B2E05] transition-all duration-300 group-hover/item:w-full" /></div>
-      </Link>
-    </NavigationMenuLink>
-  </li>
-));
-ListItem.displayName = "ListItem";

@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { showToast } from "@/components/Toast"; 
 import { 
   RiMailLine, 
   RiPhoneLine, 
@@ -16,22 +18,70 @@ export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isFormValid = name !== "" && email !== "" && message !== "";
+  const isFormValid = name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
+
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid || isLoading) return;
+
+    setIsLoading(true);
+    const toastId = showToast.loading("Sedang mengirim pesan...");
+
+    const templateParams = {
+      title: "Kontak Masuk",
+      name: name,
+      email: email,
+      message: message,
+    };
+
+    emailjs.send(
+      "service_5ou2tnc",
+      "template_gq7yetb",
+      templateParams,
+      "Ecu4nP1XPg_l7PzFF"
+    )
+    .then(() => {
+      showToast.success("Pesan berhasil dikirim!", toastId);
+      setName("");
+      setEmail("");
+      setMessage("");
+    })
+    .catch(() => {
+      showToast.error("Gagal mengirim pesan.", toastId);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  };
+
+  function ContactInfo({ icon, text }: { icon: React.ReactNode; text: string }) {
+    return (
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-lg border-[1.5px] border-[#4B2E05] text-[#4B2E05] flex items-center justify-center">
+          {icon}
+        </div>
+        <span className="text-base lg:text-lg font-bold truncate">{text}</span>
+      </div>
+    );
+  }
 
   return (
-    <section id="contact" className="w-full max-w-7xl mx-auto px-6 py-16">
+    <section id="contact" className="w-full max-w-7xl mx-auto px-6 py-16 font-inder">
       <div className="flex flex-col md:flex-row gap-10 lg:gap-16 items-start">
         <div className="w-full md:flex-[2] bg-[#F4B740] rounded-[15px] p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl font-bold text-[#4B2E05] text-center mb-6">
+          <h2 className="text-2xl font-bold text-[#4B2E05] text-center mb-6 uppercase tracking-widest">
             Hubungi Kami
           </h2>
 
-          <form className="space-y-4 text-[#4B2E05]">
+          <form onSubmit={handleSendEmail} className="space-y-4 text-[#4B2E05]">
             <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Nama</Label>
               <Input 
+                required
                 value={name}
+                suppressHydrationWarning
                 onChange={(e) => setName(e.target.value)}
                 className="h-10 rounded-[12px] border-none bg-[#FFF8E1] shadow-sm text-base px-4 focus-visible:ring-2 focus-visible:ring-[#4B2E05]"
               />
@@ -40,8 +90,10 @@ export default function Contact() {
             <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Email</Label>
               <Input 
+                required
                 type="email"
                 value={email}
+                suppressHydrationWarning
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-10 rounded-[12px] border-none bg-[#FFF8E1] shadow-sm text-base px-4 focus-visible:ring-2 focus-visible:ring-[#4B2E05]"
               />
@@ -50,7 +102,9 @@ export default function Contact() {
             <div className="space-y-1.5">
               <Label className="text-base font-bold ml-1">Pesan</Label>
               <Textarea 
+                required
                 value={message}
+                suppressHydrationWarning
                 onChange={(e) => setMessage(e.target.value)}
                 className="min-h-[120px] rounded-[12px] border-none bg-[#FFF8E1] shadow-sm text-base p-4 focus-visible:ring-2 focus-visible:ring-[#4B2E05] resize-none"
               />
@@ -58,11 +112,11 @@ export default function Contact() {
 
             <div className="pt-2">
               <Button 
-                type="button"
-                disabled={!isFormValid}
+                type="submit"
+                disabled={!isFormValid || isLoading}
                 className="w-28 h-9 bg-[#34581B] hover:bg-[#2c4b17] rounded-[15px] text-white text-base font-bold shadow-md transition-transform active:scale-95 disabled:opacity-50"
               >
-                Kirim
+                {isLoading ? "Memproses" : "Kirim"}
               </Button>
             </div>
           </form>
@@ -88,19 +142,7 @@ export default function Contact() {
             <ContactInfo icon={<RiFacebookCircleLine size={20} />} text="suhitabeefarm" />
           </div>
         </div>
-
       </div>
     </section>
-  );
-}
-
-function ContactInfo({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="p-2 rounded-lg border-[1.5px] border-[#4B2E05] text-[#4B2E05] flex items-center justify-center">
-        {icon}
-      </div>
-      <span className="text-base lg:text-lg font-bold truncate">{text}</span>
-    </div>
   );
 }

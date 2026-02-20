@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inder } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const inder = Inder({ 
   weight: "400", 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inder.className} antialiased`}>
         {children}
+        <Toaster position="top-center" />
       </body>
     </html>
   );
