@@ -98,7 +98,7 @@ function ResetPasswordForm() {
                 type={showNewPass ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Gunakan kombinasi kuat"
+                // placeholder="Gunakan kombinasi kuat"
                 className={`h-11 rounded-[15px] border-none bg-[#FFF8E1] shadow-md focus-visible:ring-2 focus-visible:ring-[#4B2E05] pr-12 text-lg ${showPassError ? 'ring-2 ring-red-500' : ''}`}
               />
               <button type="button" onClick={() => setShowNewPass(!showNewPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-2xl text-[#4B2E05]/60 hover:text-[#4B2E05]">

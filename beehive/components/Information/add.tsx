@@ -116,10 +116,10 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
               <div className="space-y-2 pt-2">
                 <Label className="text-sm font-bold ml-1 opacity-80 uppercase tracking-tight">DOKUMENTASI FOTO</Label>
                 <div className="grid grid-cols-2 gap-3">
-                  <UploadBox label="Foto Tubuh" img={previews[0]} onClick={() => { setActiveIdx(0); fileInputRef.current?.click(); }} />
-                  <UploadBox label="Foto Sayap" img={previews[1]} onClick={() => { setActiveIdx(1); fileInputRef.current?.click(); }} />
-                  <UploadBox label="Foto Pintu" img={previews[2]} onClick={() => { setActiveIdx(2); fileInputRef.current?.click(); }} />
-                  <UploadBox label="Foto Kantong" img={previews[3]} onClick={() => { setActiveIdx(3); fileInputRef.current?.click(); }} />
+                  <UploadBox label="Foto Tubuh Lebah" img={previews[0]} onClick={() => { setActiveIdx(0); fileInputRef.current?.click(); }} />
+                  <UploadBox label="Foto Sayap Lebah" img={previews[1]} onClick={() => { setActiveIdx(1); fileInputRef.current?.click(); }} />
+                  <UploadBox label="Foto Pintu Masuk" img={previews[2]} onClick={() => { setActiveIdx(2); fileInputRef.current?.click(); }} />
+                  <UploadBox label="Foto Kantong Madu" img={previews[3]} onClick={() => { setActiveIdx(3); fileInputRef.current?.click(); }} />
                 </div>
               </div>
             </div>
