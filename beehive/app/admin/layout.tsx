@@ -1,17 +1,15 @@
 import Navbar from "@/components/Navbar";
-import { Toaster } from "@/components/ui/sonner";
 
-export default function MainLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen lg:h-screen flex flex-col bg-[#FFF8E1]">
+    <div className="h-screen bg-[#FFF8E1]">
       <Navbar />
-      <main className="flex-1 min-h-0 pt-10 overflow-y-auto lg:overflow-hidden">
+      <main className=" min-h-screen pt-15 md:pt-10">
         {children}
-        <Toaster position="top-center" />
       </main>
     </div>
   );

@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import { Toaster } from "@/components/ui/sonner";
 
 export default function MainLayout({
   children,
@@ -11,7 +10,6 @@ export default function MainLayout({
       <Navbar />
       <main className=" min-h-screen pt-15 md:pt-10">
         {children}
-        <Toaster position="top-center" />
       </main>
     </div>
   );

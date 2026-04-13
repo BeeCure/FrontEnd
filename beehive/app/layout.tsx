@@ -11,7 +11,7 @@ const inder = Inder({
 
 export const metadata: Metadata = {
   title: "BeeVra",
-  description: "Pelestarian Lebah Madu",
+  description: "Sisten Informasi dan Klasifikasi Lebah Madu",
 };
 
 export default function RootLayout({

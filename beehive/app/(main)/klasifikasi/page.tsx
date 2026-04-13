@@ -59,6 +59,10 @@ export default function KlasifikasiPage() {
     }
   }, [router]);
 
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   const fetchHistory = useCallback(async () => {
     setIsHistoryLoading(true);
     try {
@@ -71,10 +75,6 @@ export default function KlasifikasiPage() {
       setIsHistoryLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

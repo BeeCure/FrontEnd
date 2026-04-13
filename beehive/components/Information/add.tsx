@@ -26,7 +26,6 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
 
   const [files, setFiles] = useState<(File | null)[]>([null, null, null, null]);
   const [previews, setPreviews] = useState<(string | null)[]>([null, null, null, null]);
-
   const imageKeys = ["bodyShape", "wingShape", "entranceShape", "honeyPouchShape"];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +75,6 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
       } else {
         showToast.error(result.message || "Gagal menambahkan data.", toastId);
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       showToast.error("Terjadi kesalahan koneksi.", toastId);
     } finally {
@@ -126,8 +124,15 @@ export default function AddDataBee({ onSuccess }: { onSuccess: () => void }) {
           </div>
 
           <div className="flex justify-end gap-3 mt-4">
-            <Button type="button" onClick={() => setIsOpen(false)} className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] px-10 h-10 font-bold border-none shadow-md">Batal</Button>
-            <Button type="submit" disabled={isLoading} className="bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] px-10 h-10 font-bold border-none shadow-md transition-all active:scale-95 disabled:opacity-50">
+            <Button 
+              type="button" 
+              onClick={() => setIsOpen(false)} 
+              className="bg-[#8E4117] hover:bg-[#7a3713] text-white rounded-[15px] px-10 h-10 font-bold border-none shadow-md">Batal</Button>
+            <Button 
+              type="submit" 
+              disabled={isLoading} 
+              className="bg-[#34581B] hover:bg-[#2c4b17] text-white rounded-[15px] px-10 h-10 font-bold border-none shadow-md transition-all active:scale-95 disabled:opacity-50"
+            >
               {isLoading ? <Loader2 className="animate-spin" /> : "Simpan Data"}
             </Button>
           </div>
@@ -147,7 +152,8 @@ function AddField({ label, id, value, onChange }: { label: string; id: string; v
         value={value} 
         onChange={onChange} 
         autoComplete="off"
-        className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-inner text-[#4B2E05] font-semibold px-4 focus-visible:ring-2 focus-visible:ring-[#4B2E05]/20 transition-all" 
+        className="h-10 rounded-[15px] border-none bg-[#FFF8E1] shadow-inner text-[#4B2E05] font-semibold px-4 
+          focus-visible:ring-2 focus-visible:ring-[#4B2E05]/20 transition-all" 
       />
     </div>
   );
@@ -157,7 +163,8 @@ function UploadBox({ label, img, onClick }: { label: string; img: string | null;
   return (
     <div 
       onClick={onClick} 
-      className="group relative flex flex-col items-center justify-center bg-[#FFF8E1] rounded-[15px] aspect-video cursor-pointer shadow-inner border-2 border-dashed border-[#4B2E05]/10 hover:border-[#4B2E05]/40 transition-all overflow-hidden"
+      className="group relative flex flex-col items-center justify-center bg-[#FFF8E1] rounded-[15px] aspect-video 
+        cursor-pointer shadow-inner border-2 border-dashed border-[#4B2E05]/10 hover:border-[#4B2E05]/40 transition-all overflow-hidden"
     >
       {img ? (
         <Image src={img} alt="Preview" fill className="object-cover" />
